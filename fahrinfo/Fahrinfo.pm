@@ -1,5 +1,6 @@
 package Fahrinfo;
 use strict;
+use FindBin;
 use Switch;
 
 sub add_linebreaks {
@@ -206,164 +207,34 @@ sub define_specifier {
      case 'x'            {goto BUS;}
    }
    FERN:
-   switch ($dtime) {
-     case {$dtime <= -10}   {$spec = 'A';}
-     case [-9..-1]          {$spec = 'a';}
-     case [0]               {$spec = 'P';}
-     case [1..9]            {$spec = 'd';}
-     case [10..29]          {$spec = 'D';}
-     case [30..59]          {$spec = 'f';}
-     case [60..89]          {$spec = 'F';}
-     case [90..119]         {$spec = 's';}
-     case [120..179]        {$spec = 'S';}
-     case [180..209]        {$spec = 'N';}
-     case {$dtime >= 180}   {$spec = 'x';}
-     else                   {$spec = '-';}
-   }
+   $spec = Fahrinfo::def_spec($dtime,-10,9,29,59,89,119,179,209);
    goto AUSW;
    REGIO:
-   switch ($dtime) {
-     case {$dtime <= -5}    {$spec = 'A';}
-     case [-4..-1]          {$spec = 'a';}
-     case [0]               {$spec = 'P';}
-     case [1..4]            {$spec = 'd';}
-     case [5..9]            {$spec = 'D';}
-     case [10..19]          {$spec = 'f';}
-     case [20..29]          {$spec = 'F';}
-     case [30..59]          {$spec = 's';}
-     case [60..89]          {$spec = 'S';}
-     case [90..119]         {$spec = 'N';}
-     case {$dtime >= 120}   {$spec = 'x';}
-     else                   {$spec = '-';}
-   }
+   $spec = Fahrinfo::def_spec($dtime,-5,4,9,19,29,59,89,119);
    goto AUSW;
    SBAHN:
-   switch ($dtime) {
-     case {$dtime <= -2}    {$spec = 'A';}
-     case [-1]              {$spec = 'a';}
-     case [0]               {$spec = 'P';}
-     case [1]               {$spec = 'd';}
-     case [2]               {$spec = 'D';}
-     case [3..4]            {$spec = 'f';}
-     case [5..9]            {$spec = 'F';}
-     case [10..14]          {$spec = 's';}
-     case [15..19]          {$spec = 'S';}
-     case [20..39]          {$spec = 'N';}
-     case {$dtime >= 40}    {$spec = 'x';}
-     else                   {$spec = '-';}
-   }
+   $spec = Fahrinfo::def_spec($dtime,-2,1,2,4,9,14,19,39);
    goto AUSW;
    UBAHN:
-   switch ($dtime) {
-     case {$dtime <= -2}    {$spec = 'A';}
-     case [-1]              {$spec = 'a';}
-     case [0]               {$spec = 'P';}
-     case [1]               {$spec = 'd';}
-     case [2]               {$spec = 'D';}
-     case [3]               {$spec = 'f';}
-     case [4..5]            {$spec = 'F';}
-     case [6..7]            {$spec = 's';}
-     case [8..9]            {$spec = 'S';}
-     case [10..19]          {$spec = 'N';}
-     case {$dtime >= 20}    {$spec = 'x';}
-     else                   {$spec = '-';}
-   }
+   $spec = Fahrinfo::def_spec($dtime,-2,1,2,3,5,7,9,19);
    goto AUSW;
    METRO:
-   switch ($dtime) {
-     case {$dtime <= -2}    {$spec = 'A';}
-     case [-1]              {$spec = 'a';}
-     case [0]               {$spec = 'P';}
-     case [1]               {$spec = 'd';}
-     case [2]               {$spec = 'D';}
-     case [3]               {$spec = 'f';}
-     case [4..5]            {$spec = 'F';}
-     case [6..7]            {$spec = 's';}
-     case [8..9]            {$spec = 'S';}
-     case [10..29]          {$spec = 'N';}
-     case {$dtime >= 30}    {$spec = 'x';}
-     else                   {$spec = '-';}
-   }
+   $spec = Fahrinfo::def_spec($dtime,-2,1,2,3,5,7,9,29);
    goto AUSW;
    TRAM:
-   switch ($dtime) {
-     case {$dtime <= -2}    {$spec = 'A';}
-     case [-1]              {$spec = 'a';}
-     case [0]               {$spec = 'P';}
-     case [1]               {$spec = 'd';}
-     case [2]               {$spec = 'D';}
-     case [3..4]            {$spec = 'f';}
-     case [5..9]            {$spec = 'F';}
-     case [10..14]          {$spec = 's';}
-     case [15..19]          {$spec = 'S';}
-     case [20..39]          {$spec = 'N';}
-     case {$dtime >= 40}    {$spec = 'x';}
-     else                   {$spec = '-';}
-   }
+   $spec = Fahrinfo::def_spec($dtime,-2,1,2,4,9,14,19,39);
    goto AUSW;
    BUS:
-   switch ($dtime) {
-     case {$dtime <= -2}    {$spec = 'A';}
-     case [-1]              {$spec = 'a';}
-     case [0]               {$spec = 'P';}
-     case [1]               {$spec = 'd';}
-     case [2]               {$spec = 'D';}
-     case [3..4]            {$spec = 'f';}
-     case [5..9]            {$spec = 'F';}
-     case [10..14]          {$spec = 's';}
-     case [15..19]          {$spec = 'S';}
-     case [20..39]          {$spec = 'N';}
-     case {$dtime >= 40}    {$spec = 'x';}
-     else                   {$spec = '-';}
-   }
+   $spec = Fahrinfo::def_spec($dtime,-2,1,2,4,9,14,19,39);
    goto AUSW;
    NACHT:
-   switch ($dtime) {
-     case {$dtime <= -2}    {$spec = 'A';}
-     case [-1]              {$spec = 'a';}
-     case [0]               {$spec = 'P';}
-     case [1]               {$spec = 'd';}
-     case [2]               {$spec = 'D';}
-     case [3..4]            {$spec = 'f';}
-     case [5..9]            {$spec = 'F';}
-     case [10..19]          {$spec = 's';}
-     case [20..29]          {$spec = 'S';}
-     case [30..59]          {$spec = 'N';}
-     case {$dtime >= 60}    {$spec = 'x';}
-     else                   {$spec = '-';}
-   }
+   $spec = Fahrinfo::def_spec($dtime,-2,1,2,4,9,19,29,59);
    goto AUSW;
    FERRY:
-   switch ($dtime) {
-     case {$dtime <= -2}    {$spec = 'A';}
-     case [-1]              {$spec = 'a';}
-     case [0]               {$spec = 'P';}
-     case [1]               {$spec = 'd';}
-     case [2]               {$spec = 'D';}
-     case [3]               {$spec = 'f';}
-     case [4]               {$spec = 'F';}
-     case [5]               {$spec = 's';}
-     case [6]               {$spec = 'S';}
-     case [7..9]            {$spec = 'N';}
-     case {$dtime <= 10}    {$spec = 'x';}
-     else                   {$spec = '-';}
-   }
+   $spec = Fahrinfo::def_spec($dtime,-2,1,2,3,4,5,6,9);
    goto AUSW;
    ELSE:
-   switch ($dtime) {
-     case {$dtime <= -3}    {$spec = 'A';}
-     case [-2..-1]          {$spec = 'a';}
-     case [0]               {$spec = 'P';}
-     case [1..2]            {$spec = 'd';}
-     case [3..4]            {$spec = 'D';}
-     case [5..7]            {$spec = 'f';}
-     case [8..9]            {$spec = 'F';}
-     case [10..14]          {$spec = 's';}
-     case [15..19]          {$spec = 'S';}
-     case [20..39]          {$spec = 'N';}
-     case {$dtime >= 40}    {$spec = 'x';}
-     else                   {$spec = '-';}
-   }
+   $spec = Fahrinfo::def_spec($dtime,-3,2,4,7,9,14,19,39);
    goto AUSW;
    AUSW:
    return $spec;
@@ -665,7 +536,7 @@ sub read_fahrinfo {
 
 sub read_params {
   my $delt = $_[0];
-  open (PARAM, '/home/stefan/bin/Fahrinfo.param') || die "cannot open params file\n";
+  open (PARAM, "$FindBin::Bin/Fahrinfo.param") || die "cannot open params file\n";
   while (my $line = <PARAM>){
     if($line =~ /^[0-9]{1,}/){
       $line =~ /^([0-9]{1,})/;

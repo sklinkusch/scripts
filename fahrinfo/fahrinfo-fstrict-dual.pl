@@ -16,7 +16,7 @@ use Encode;
 use open ':encoding(utf8)';
 use open ':std';
 use FindBin;
-use lib "/home/stefan/bin/";
+use lib $FindBin::Bin;
 use Fahrinfo;
 
 ### set variables
@@ -107,7 +107,7 @@ sub checkNet {
 
 sub haltnummer {
   my $halt = shift;
-  open(DATA, '/home/stefan/bin/fahrinfo-elinks2.dat') || die "can't open 'fahrinfo-elinks2.dat'";
+  open(DATA, "$FindBin::Bin/../data/fahrinfo-elinks2.dat") || die "can't open 'fahrinfo-elinks2.dat'";
   my $numma = -1;
   my $str;
   my $haltu;

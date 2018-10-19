@@ -16,9 +16,8 @@ use Encode;                            # packages to reencode text
 use open ':encoding(utf8)';                                                      
 use open ':std';                                                                 
 use FindBin;                           # package to find an extra file for modules
-use lib "/home/stefan/bin/";           # absolute path where extra file is found
+use lib $FindBin::Bin;                 # absolute path where extra file is found
 use Fahrinfo;                          # name of extra file (without .pm ending)
-
 
 ### set variables
 if ($#ARGV != 2 and $#ARGV != 3) {
@@ -98,7 +97,7 @@ sub checkNet {
 
 sub haltnummer {
   my $halt = shift;
-  open(DATA, '/home/stefan/bin/fahrinfo-elinks2.dat') || die "can't open 'fahrinfo-elinks2.dat'";
+  open(DATA, "$FindBin::Bin/../data/fahrinfo-elinks2.dat") || die "can't open 'fahrinfo-elinks2.dat'";
   my $numma = -1;
   my $str;
   my $haltu;
