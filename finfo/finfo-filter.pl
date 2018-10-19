@@ -7,8 +7,8 @@ use Encode;
 use open ':encoding(utf8)';
 use open ':std';
 use FindBin;
-use lib "/home/stefan/bin/";
-use Fahrinfo;
+use lib $FindBin::Bin;
+use Fahrinfo_ubuntu;
 
 ### set variables
 print_exit() if ($#ARGV < 5);
@@ -17,7 +17,7 @@ my $haltestelle = join('',$ARGV[0]);
 my $xnumm = join('',$ARGV[3]);
 my @haltestellenarr = haltnummer($haltestelle);
 my $haltestellenum = $haltestellenarr[1];
-my $haltestellenr = Fahrinfo::get_number($haltestellenum);
+my $haltestellenr = Fahrinfo_ubuntu::get_number($haltestellenum);
 my $station = $haltestellenarr[0];
 
 my $typus = join('',$ARGV[1]);
@@ -25,7 +25,7 @@ print_exit() if ($typus ne 'dep' and $typus ne 'arr');
 
 my $filtre = join('',$ARGV[2]);
 $filtre = 127 if ($filtre < 1 or $filtre > 127);
-my $filter = Fahrinfo::calc_filter($filtre);
+my $filter = Fahrinfo_ubuntu::calc_filter($filtre);
 
 my $num;
 
@@ -58,11 +58,11 @@ sub checkNet {
   # open a pipe to the acpi command and read the battery value
   # and a few other parameters
   open (ACPI, "$command |") || die "can't open pipe!";
-  Fahrinfo::read_finfo(\*ACPI,$station,\@text);
+  Fahrinfo_ubuntu::read_finfo(\*ACPI,$station,\@text);
   close ACPI;
-  Fahrinfo::ft_sgl($fliniespec,\@flinie,\@text,\@ftext);
-  Fahrinfo::pmax_sgl(\@ftext);
-  Fahrinfo::add_lbr(\@ftext);
+  Fahrinfo_ubuntu::ft_sgl($fliniespec,\@flinie,\@text,\@ftext);
+  Fahrinfo_ubuntu::pmax_sgl(\@ftext);
+  Fahrinfo_ubuntu::add_lbr(\@ftext);
   my $nftext = $#ftext;
   if($nftext > -1){
     print "@ftext";
@@ -71,7 +71,7 @@ sub checkNet {
 
 sub haltnummer {
   my $halt = shift;
-  open(DATA, '/home/stefan/bin/fahrinfo-elinks2.dat') || die "can't open 'fahrinfo-elinks2.dat'";
+  open(DATA, "$FindBin::Bin/../data/fahrinfo-elinks2.dat") || die "can't open 'fahrinfo-elinks2.dat'";
   my $numma = -1;
   my $str;
   my $haltu;

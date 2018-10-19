@@ -7,8 +7,8 @@ use Encode;                            # packages to reencode text
 use open ':encoding(utf8)';                                                      
 use open ':std';                                                                 
 use FindBin;                           # package to find an extra file for modules
-use lib "/home/stefan/bin/";           # absolute path where extra file is found
-use Fahrinfo;                          # name of extra file (without .pm ending)
+use lib $FindBin::bin;                 # absolute path where extra file is found
+use Fahrinfo_ubuntu;                   # name of extra file (without .pm ending)
 
 ### set variables
 if ($#ARGV != 2 and $#ARGV != 3) {
@@ -19,7 +19,7 @@ my $haltestelle = join('',$ARGV[0]);
 my $xnumm = join('',$ARGV[3]) if $#ARGV == 3;
 my @haltestellenarr = haltnummer($haltestelle);
 my $haltestellennum = $haltestellenarr[1];
-my $haltestellenr = Fahrinfo::get_number($haltestellennum);
+my $haltestellenr = Fahrinfo_ubuntu::get_number($haltestellennum);
 my $station = $haltestellenarr[0];
 
 my $typus = join('',$ARGV[1]);
@@ -29,7 +29,7 @@ if ($typus ne 'dep' and $typus ne 'arr') {
 
 my $filtre = join('',$ARGV[2]);
 $filtre = 127 if ($filtre < 1 or $filtre > 127);
-my $filter = Fahrinfo::calc_filter($filtre);
+my $filter = Fahrinfo_ubuntu::calc_filter($filtre);
 
 my $num;
 
@@ -51,10 +51,10 @@ sub checkNet {
   my $num = shift;
   my @text;  
   open (ACPI, "$command |") || die "can't open pipe!";
-  Fahrinfo::read_finfo(\*ACPI,$station,\@text);
+  Fahrinfo_ubuntu::read_finfo(\*ACPI,$station,\@text);
   close ACPI;
-  Fahrinfo::pmax_sgl(\@text);
-  Fahrinfo::add_lbr(\@text);
+  Fahrinfo_ubuntu::pmax_sgl(\@text);
+  Fahrinfo_ubuntu::add_lbr(\@text);
   my $nrtext = $#text;
   if($nrtext > -1){
     print "@text";
@@ -63,7 +63,7 @@ sub checkNet {
 
 sub haltnummer {
   my $halt = shift;
-  open(DATA, '/home/stefan/bin/fahrinfo-elinks2.dat') || die "can't open 'fahrinfo-elinks2.dat'";
+  open(DATA, "$FindBin::Bin/../data/fahrinfo-elinks2.dat") || die "can't open 'fahrinfo-elinks2.dat'";
   my $numma = -1;
   my $str;
   my $haltu;

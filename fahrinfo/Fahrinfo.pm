@@ -133,6 +133,26 @@ sub compose_fstrict_dual {
   }
 }
 
+sub def_spec {
+  my ($dtime,$A,$d,$D,$f,$F,$s,$S,$N) = @_;
+  my $spec;
+  switch ($dtime){
+    case {$dtime <= $A}          {$spec = 'A';}
+    case [($A+1)..-1]            {$spec = 'a';}
+    case [0]                     {$spec = 'P';}
+    case [1..$d]                 {$spec = 'd';}
+    case [($d+1)..$D]            {$spec = 'D';}
+    case [($D+1)..$f]            {$spec = 'f';}
+    case [($f+1)..$F]            {$spec = 'F';}
+    case [($F+1)..$s]            {$spec = 's';}
+    case [($s+1)..$S]            {$spec = 'S';}
+    case [($S+1)..$N]            {$spec = 'N';}
+    case {$dtime > $N}           {$spec = 'x';}
+    else                         {$spec = '-';}
+  }
+  return $spec;
+}
+
 sub define_product {
    my @arr = @_;
    my $linie = $arr[0];

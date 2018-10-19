@@ -7,8 +7,8 @@ use Encode;                            # packages to reencode text
 use open ':encoding(utf8)';                                                      
 use open ':std';                                                                 
 use FindBin;                           # package to find an extra file for modules
-use lib "/home/stefan/bin/";           # absolute path where extra file is found
-use Fahrinfo;                          # name of extra file (without .pm ending)
+use lib $FindBin::Bin;                 # absolute path where extra file is found
+use Fahrinfo_ubuntu;                   # name of extra file (without .pm ending)
 
 ### set variables
 print_exit() unless ($#ARGV == 7);
@@ -21,8 +21,8 @@ my @ahaltestellenarr = haltnummer($ahaltestelle,$axnumm);
 my @bhaltestellenarr = haltnummer($bhaltestelle,$bxnumm);
 my $ahaltestellennum = $ahaltestellenarr[1];
 my $bhaltestellennum = $bhaltestellenarr[1];
-my $ahaltestellenr = Fahrinfo::get_number($ahaltestellennum);
-my $bhaltestellenr = Fahrinfo::get_number($bhaltestellennum);
+my $ahaltestellenr = Fahrinfo_ubuntu::get_number($ahaltestellennum);
+my $bhaltestellenr = Fahrinfo_ubuntu::get_number($bhaltestellennum);
 my $astation = $ahaltestellenarr[0];
 my $bstation = $bhaltestellenarr[0];
 
@@ -33,10 +33,10 @@ print_exit() if ($btypus ne 'dep' and $btypus ne 'arr');
 
 my $afiltre = join('',$ARGV[2]);
 $afiltre = 127 if ($afiltre < 1 or $afiltre > 127);
-my $afilter = Fahrinfo::calc_filter($afiltre);
+my $afilter = Fahrinfo_ubuntu::calc_filter($afiltre);
 my $bfiltre = join('',$ARGV[6]);
 $bfiltre = 127 if ($bfiltre < 1 or $bfiltre > 127);
-my $bfilter = Fahrinfo::calc_filter($bfiltre);
+my $bfilter = Fahrinfo_ubuntu::calc_filter($bfiltre);
 
 my $num;
 
@@ -64,17 +64,17 @@ sub checkNet {
   my @btext; 
   my @bptext; 
   open (ACPI, "$acommand |") || die "can't open pipe!";
-  Fahrinfo::read_str(\*ACPI,$astation,\@aptext);
+  Fahrinfo_ubuntu::read_str(\*ACPI,$astation,\@aptext);
   close ACPI;
-  Fahrinfo::make_fstr(\@aptext,\@atext);
+  Fahrinfo_ubuntu::make_fstr(\@aptext,\@atext);
 
   open (ACPJ, "$bcommand |") || die "can't open pipe!";
-  Fahrinfo::read_str(\*ACPJ,$bstation,\@bptext);
+  Fahrinfo_ubuntu::read_str(\*ACPJ,$bstation,\@bptext);
   close ACPJ;
-  Fahrinfo::make_fstr(\@bptext,\@btext);
+  Fahrinfo_ubuntu::make_fstr(\@bptext,\@btext);
 
-  Fahrinfo::pmax_dual(\@atext,\@btext);
-  Fahrinfo::cmp_fstr_dual(\@atext,\@btext,\@text);
+  Fahrinfo_ubuntu::pmax_dual(\@atext,\@btext);
+  Fahrinfo_ubuntu::cmp_fstr_dual(\@atext,\@btext,\@text);
   my $nrtext = $#text;
   if($nrtext > -1){
     print "@text";
@@ -84,7 +84,7 @@ sub checkNet {
 sub haltnummer {
   my $halt = $_[0];
   my $numm = $_[1];
-  open(DATA, '/home/stefan/bin/fahrinfo-elinks2.dat') || die "can't open 'fahrinfo-elinks2.dat'";
+  open(DATA, "$FindBin::Bin/../data/fahrinfo-elinks2.dat") || die "can't open 'fahrinfo-elinks2.dat'";
   my $numma = -1;
   my $str;
   my $haltu;

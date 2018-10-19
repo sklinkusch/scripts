@@ -1,5 +1,13 @@
 #!/bin/bash
 
+SOURCE="${BASH_SOURCE[0]}"
+while [ -h $SOURCE ]; do
+ DIR="$( cd -P "$( dirname "$SOURCE" )" > /dev/null && pwd )"
+ SOURCE="$(readlink "$SOURCE")"
+ [[ $SOURCE != /* ]] && SOURCE="$DIR/$SOURCE"
+done
+DIR="$( cd -P "$( dirname "$SOURCE" )" > /dev/null && pwd )"
+
 stat="$1"
 shift
 prod=$1
@@ -10,4 +18,4 @@ fspec=$1
 shift
 filter="$*"
 
- watch -tn 15 finfo-filter-dual.pl \"$stat\" $prod $lnr $fspec "$filter"
+ watch -tn 15 $DIR/finfo-filter-dual.pl \"$stat\" $prod $lnr $fspec "$filter"

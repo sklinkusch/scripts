@@ -7,8 +7,8 @@ use Encode;
 use open ':encoding(utf8)';
 use open ':std';
 use FindBin;
-use lib "/home/stefan/bin/";
-use Fahrinfo;
+use lib $FindBin::Bin;
+use Fahrinfo_ubuntu;
 
 ### set variables
 print_exit() if ($#ARGV < 5);
@@ -25,7 +25,7 @@ print_exit() if ($typus ne 'dep' and $typus ne 'arr');
 
 my $filtre = join('',$ARGV[2]);
 $filtre = 127 if ($filtre < 1 or $filtre > 127);
-my $filter = Fahrinfo::calc_filter($filtre);
+my $filter = Fahrinfo_ubuntu::calc_filter($filtre);
 
 my $num;
 
@@ -59,12 +59,12 @@ sub checkNet {
   # open a pipe to the acpi command and read the battery value
   # and a few other parameters
   open (ACPI, "$command |") || die "can't open pipe!";
-  Fahrinfo::read_str(\*ACPI,$station,\@pretext);
+  Fahrinfo_ubuntu::read_str(\*ACPI,$station,\@pretext);
   close ACPI;
-  Fahrinfo::make_fstr(\@pretext,\@text);
-  Fahrinfo::ft_sgl($fliniespec,\@flinie,\@text,\@ftext);
-  Fahrinfo::pmax_sgl(\@ftext);
-  Fahrinfo::add_lbr(\@ftext);
+  Fahrinfo_ubuntu::make_fstr(\@pretext,\@text);
+  Fahrinfo_ubuntu::ft_sgl($fliniespec,\@flinie,\@text,\@ftext);
+  Fahrinfo_ubuntu::pmax_sgl(\@ftext);
+  Fahrinfo_ubuntu::add_lbr(\@ftext);
   my $nrtext = $#ftext;
   if($nrtext > -1){
     print "@ftext";;
@@ -73,7 +73,7 @@ sub checkNet {
 
 sub haltnummer {
   my $halt = shift;
-  open(DATA, '/home/stefan/bin/fahrinfo-elinks2.dat') || die "can't open 'fahrinfo-elinks2.dat'";
+  open(DATA, "$FindBin::Bin/../data/fahrinfo-elinks2.dat") || die "can't open 'fahrinfo-elinks2.dat'";
   my $numma = -1;
   my $str;
   my $haltu;

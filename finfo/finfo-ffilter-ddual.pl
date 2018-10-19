@@ -7,8 +7,8 @@ use Encode;
 use open ':encoding(utf8)';
 use open ':std';
 use FindBin;
-use lib "/home/stefan/bin/";
-use Fahrinfo;
+use lib $FindBin::Bin;
+use Fahrinfo_ubuntu;
 
 ### set variables
 print_exit() if ($#ARGV < 6);
@@ -17,7 +17,7 @@ my $haltestelle = join('',$ARGV[0]);
 my $xnumm = join('',$ARGV[3]);
 my @haltestellenarr = haltnummer($haltestelle);
 my $haltestellenum = $haltestellenarr[1];
-my $haltestellenr = Fahrinfo::get_number($haltestellenum);
+my $haltestellenr = Fahrinfo_ubuntu::get_number($haltestellenum);
 my $station = $haltestellenarr[0];
 
 my $typus = join('',$ARGV[1]);
@@ -25,7 +25,7 @@ print_exit() if ($typus ne 'dep' and $typus ne 'arr');
 
 my $filtre = join('',$ARGV[2]);
 $filtre = 127 if ($filtre < 1 or $filtre > 127);
-my $filter = Fahrinfo::calc_filter($filtre);
+my $filter = Fahrinfo_ubuntu::calc_filter($filtre);
 
 my $num;
 my $debug = 0;
@@ -72,12 +72,12 @@ sub checkNet {
   # open a pipe to the acpi command and read the battery value
   # and a few other parameters
   open (ACPI, "$command |") || die "can't open pipe!";
-  Fahrinfo::read_finfo(\*ACPI,$station,\@xtext);
+  Fahrinfo_ubuntu::read_finfo(\*ACPI,$station,\@xtext);
   close ACPI;
-  Fahrinfo::ft_sgl($faliniespec,\@falinie,\@xtext,\@fatext);
-  Fahrinfo::ft_sgl($fbliniespec,\@fblinie,\@xtext,\@fbtext);
-  Fahrinfo::pmax_dual(\@fatext,\@fbtext);
-  Fahrinfo::cmp_dual(\@fatext,\@fbtext,\@text);
+  Fahrinfo_ubuntu::ft_sgl($faliniespec,\@falinie,\@xtext,\@fatext);
+  Fahrinfo_ubuntu::ft_sgl($fbliniespec,\@fblinie,\@xtext,\@fbtext);
+  Fahrinfo_ubuntu::pmax_dual(\@fatext,\@fbtext);
+  Fahrinfo_ubuntu::cmp_dual(\@fatext,\@fbtext,\@text);
   my $nfetext = $#text;
   if($nfetext > -1){
     print "@text";
@@ -86,7 +86,7 @@ sub checkNet {
 
 sub haltnummer {
   my $halt = shift;
-  open(DATA, '/home/stefan/bin/fahrinfo-elinks2.dat') || die "can't open 'fahrinfo-elinks2.dat'";
+  open(DATA, "$FindBin::Bin/../data/fahrinfo-elinks2.dat") || die "can't open 'fahrinfo-elinks2.dat'";
   my $numma = -1;
   my $str;
   my $haltu;
