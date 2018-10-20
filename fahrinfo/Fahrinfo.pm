@@ -988,7 +988,7 @@ sub sort_entries {
       push(@$t,$$at[0]);
       push(@$et,$$aet[0]);
       shift(@$at);
-      shift(@$bet);
+      shift(@$aet);
     }else{
       push(@$t,$$bt[0]);
       push(@$et,$$bet[0]);
