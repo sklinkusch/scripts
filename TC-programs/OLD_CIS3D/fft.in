@@ -1,0 +1,9 @@
+50000    #output points (half used)
+5000     #input points
+7        # n col
+1        # t col 
+5        # sig col
+
+x-puls.fad       # input file 
+
+

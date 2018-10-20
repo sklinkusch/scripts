@@ -1,0 +1,11 @@
+set title 'caca1.pop population analysis'
+set xlabel 'Time (fs)'
+set ylabel 'State population' 
+set yrange [0:1]
+plot 'caca1.pop' using ($1*2.41888e-2):2 t '|0>' with lines lw 3, \
+'caca1.pop' using ($1*2.41888e-2):3 t '|1>' with lines lw 3, \
+'caca1.pop' using ($1*2.41888e-2):4 t '|2>' with lines lw 3, \
+'caca1.pop' using ($1*2.41888e-2):5 t '|3>' with lines lw 3, \
+'caca1.pop' using ($1*2.41888e-2):6 t '|4>' with lines lw 3, \
+'caca1.pop' using ($1*2.41888e-2):7 t '|5>' with lines lw 3
+q

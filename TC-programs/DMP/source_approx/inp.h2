@@ -1,0 +1,25 @@
+# INPUT PARAMETERS
+.true.			Restart: read input density from 'rho.rst' file
+"states.h2_stefan"	File name: energies of the eigenstates in atomic units
+"coupling.h2"		File name: dipole moment and initial density
+41	6		Number of subsystem eigenstates, number of bound states
+1d0			scaling factor for ionization rates
+0d0			Temperature in Kelvin
+
+# PROPAGATION PARAMETERS
+48.3776864d0	100d0	Initial/Final propagation time (fs)	(1000ua = 24.1888432d0) 	
+4001			Number of time steps for propagation
+rungekutta 		Integration method (choose: adaptive, rungekutta)
+.false.			Propagate in the interaction representation
+1e-7			Relative tolerance for Adaptive step size
+
+# FIELD PARAMETERS
+.false.			Readfield: read input field from file
+seq.dat			File name: input field
+00z			Polarization of the electric field (choose: xyz,xy0,x0z,0yz,x00,0y0,00z,000)
+0.56833184308296d0	Frequency for the quasi-resonant approximation and/or constant field (a.u.)
+8.68296d-3		Field amplitude (a.u.)
+
+# OUTPUT PARAMETERS
+caca1			File root name for output
+1			Number of steps between two population outputs

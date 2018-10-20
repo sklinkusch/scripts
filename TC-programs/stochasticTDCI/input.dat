@@ -1,0 +1,20 @@
+# INPUT PARAMETERS
+.false.				Restart: read input density from 'rho.rst' file
+'test-matrix/benchmark.sys'	File name: energies of the eigenstates in atomic units
+100	10			Number of subsystem CSF and eigenstates
+50	1			Number of quantum trajectories, number of QT printed out
+0d2				Temperature in Kelvin
+
+# PROPAGATION PARAMETERS
+1000d0				Final propagation time (fs)
+5000				Number of time steps for propagation
+adaptive 			Integration method (choose: adaptive, rungekutta)
+1e-7				Relative tolerance for Adaptive step size
+
+# FIELD PARAMETERS
+'pulse.fld'			File name: initial field
+00z				Polarization of the electric field (choose: xyz,xy0,x0z,0yz,x00,0y0,00z,000)
+
+# OUTPUT PARAMETERS
+T100t1ps			File root name for output
+1				Number of steps between two population outputs

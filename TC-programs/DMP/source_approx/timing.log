@@ -1,0 +1,8 @@
+ ----------------------------------------------------------------------
+ Number of eigenstates included in the basis:           41
+ Number of eigenstates below the ionization barrier:           41
+ Temperature of the system:    0.0000000    
+ Energies of the isolated subsystem read from file: states.h2_stefan                        
+ Dipole matrix element and initial density read from file: coupling.h2                             
+ Field read from file: seq.dat                                 
+ Polarization of the electric field :: 00z
