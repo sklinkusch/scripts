@@ -1,0 +1,26 @@
+# Eingabedatei für das Programm "termin"
+1                 # Modus für die gelbe Wertstofftonne: 1 ja, 0 nein
+14                # Leerungsrhythmus (Zahl der Tage) der gelben Wertstofftonne
+11 01             # Datum der ersten Leerung der gelben Wertstofftonne
+0                 # Modus für die orange Wertstofftonne: 1 ja, 0 nein
+#dumdata          # Leerungsrhythmus (Zahl der Tage)
+#dumdata          # Datum der ersten Leerung der orangen Wertstofftonne
+1                 # Modus für die schwarze Restmülltonne: 1 ja, 0 nein
+14                # Leerungsrhythmus (Zahl der Tage)
+03 01             # Datum der ersten Leerung der schwarzen Restmülltonne
+#dumdata          # Änderung Datum und Rhythmus
+0                 # Modus für die blaue Altpapiertonne: 1 ja, 0 nein
+#dumdata          # Leerungsrhythmus (Zahl der Tage)
+#dumdata          # Datum der ersten Leerung der blauen Altpapiertonne
+#dumdata          # Änderung Datum und Rhythmus
+0                 # Modus für die grüne Altglastonne: 1 ja, 0 nein
+#dumdata          # Leerungsrhythmus (Zahl der Tage)
+#dumdata          # Datum der ersten Leerung der grünen Altglastonne
+0                 # Modus für die braune Bioguttonne: 1 ja, 0 nein
+#dumdata          # Leerungsrhythmus (Zahl der Tage)
+#dumdata          # Datum der ersten Leerung der braunen Bioguttonne
+1                 # Modus für die Abholung von Weihnachtsbäumen
+13 01             # Datum der ersten Abholung von Weihnachtsbäumen
+20 01             # Datum der zweiten Abholung von Weihnachtsbäumen
+2018              # Kalenderjahr
+
