@@ -7,9 +7,9 @@ sub add_linebreaks {
   my $in  = $_[0];
   my $ine = $_[1];
   foreach my $x (0..$#$in){
-    $in->[$x] = sprintf("%s\n",$in->[$x]);
-    $ine->[$x] = sprintf("%s\n",$ine->[$x]) if $x != 0;
-    $ine->[$x] = sprintf(" %s\n",$ine->[$x]) if $x == 0;
+    $$in[$x] = sprintf("%s\n",$$in[$x]);
+    $$ine[$x] = sprintf("%s\n",$$ine[$x]) if $x != 0;
+    $$ine[$x] = sprintf(" %s\n",$$ine[$x]) if $x == 0;
   }
 }
 
@@ -68,18 +68,18 @@ sub compose_dual {
   my $ndt = $#indx;
   foreach my $xa (0..$nat){
     if($xa == 0){
-      $t->[$xa] = $inax[$xa];
-      $et->[$xa] = " " . $ineax[$xa];
-#      $et->[$xa] = $ineax[$xa];
+      $$t[$xa] = $inax[$xa];
+      $$et[$xa] = " " . $ineax[$xa];
+#      $$et[$xa] = $ineax[$xa];
     }else{
-      $t->[$xa] = $inax[$xa];
-      $et->[$xa] = $ineax[$xa];
+      $$t[$xa] = $inax[$xa];
+      $$et[$xa] = $ineax[$xa];
     }
   }
   if($ndt > $nat){
     foreach my $xz (($nat+1)..$ndt){
-      $t->[$xz] = sprintf("%-85s",$main::spaced);
-      $et->[$xz] = sprintf("%-85s",$main::spaced);
+      $$t[$xz] = sprintf("%-85s",$main::spaced);
+      $$et[$xz] = sprintf("%-85s",$main::spaced);
     }
   }elsif($ndt < $nat){
     foreach my $xz (($ndt+1)..$nat){
@@ -88,8 +88,8 @@ sub compose_dual {
     }
   }
   foreach my $xd (0..$ndt){
-    $t->[$xd] = $t->[$xd] . $indx[$xd] . "\n";
-    $et->[$xd] = $et->[$xd] . $inedx[$xd] . "\n";
+    $$t[$xd] = $$t[$xd] . $indx[$xd] . "\n";
+    $$et[$xd] = $$et[$xd] . $inedx[$xd] . "\n";
   }
 }
 
@@ -109,18 +109,18 @@ sub compose_fstrict_dual {
   my $spaced = ' ';
   foreach my $xa (0..$nat){
     if($xa == 0){
-      $t->[$xa] = sprintf("%-87s",$inax[$xa]);
-      $et->[$xa] = sprintf(" %-87s",$ineax[$xa]);
-#      $et->[$xa] = $ineax[$xa];
+      $$t[$xa] = sprintf("%-87s",$inax[$xa]);
+      $$et[$xa] = sprintf(" %-87s",$ineax[$xa]);
+#      $$et[$xa] = $ineax[$xa];
     }else{
-      $t->[$xa] = $inax[$xa];
-      $et->[$xa] = $ineax[$xa];
+      $$t[$xa] = $inax[$xa];
+      $$et[$xa] = $ineax[$xa];
     }
   }
   if($ndt > $nat){
     foreach my $xz (($nat+1)..$ndt){
-      $t->[$xz] = sprintf("%-87s",$spaced);
-      $et->[$xz] = sprintf("%-87s",$spaced);
+      $$t[$xz] = sprintf("%-87s",$spaced);
+      $$et[$xz] = sprintf("%-87s",$spaced);
     }
   }elsif($ndt < $nat){
     foreach my $xz (($ndt+1)..$nat){
@@ -129,8 +129,8 @@ sub compose_fstrict_dual {
     }
   }
   foreach my $xd (0..$ndt){
-    $t->[$xd] = $t->[$xd] . $indx[$xd] . "\n";
-    $et->[$xd] = $et->[$xd] . $inedx[$xd] . "\n";
+    $$t[$xd] = $$t[$xd] . $indx[$xd] . "\n";
+    $$et[$xd] = $$et[$xd] . $inedx[$xd] . "\n";
   }
 }
 
@@ -247,14 +247,14 @@ sub filter_sgl {
   my $oet = $_[3];
   my $ft  = $_[4];
   my $fet = $_[5];
-  push ($ft,$ot->[0]);
-  push ($fet,$oet->[0]);
+  push (@$ft,$$ot[0]);
+  push (@$fet,$$oet[0]);
   if ($fls eq 'f'){
     foreach my $xz (1..$#$ot) {
       foreach my $xy (0..$#$fl) {
-        if ($ot->[$xz] =~ /$fl->[$xy]/){
-          push($ft,$ot->[$xz]);
-          push($fet,$oet->[$xz]);
+        if ($$ot[$xz] =~ /$$fl[$xy]/){
+          push(@$ft,$$ot[$xz]);
+          push(@$fet,$$oet[$xz]);
           last;
         }
       }
@@ -262,11 +262,43 @@ sub filter_sgl {
   }else{
     foreach my $xz (1..$#$ot) {
       foreach my $xy (0..$#$fl) {
-        if ($ot->[$xz] =~ /$fl->[$xy]/){
+        if ($$ot[$xz] =~ /$$fl[$xy]/){
           last;
-        }elsif ($ot->[$xz] !~ /$fl->[$xy]/ and $xy == $#$fl){
-          push($ft,$ot->[$xz]);
-          push($fet,$oet->[$xz]);
+        }elsif ($$ot[$xz] !~ /$$fl[$xy]/ and $xy == $#$fl){
+          push(@$ft,$$ot[$xz]);
+          push(@$fet,$$oet[$xz]);
+          last;
+        }
+      }
+    }
+  }
+}
+
+sub filter_sgl_p {
+  my $fls = $_[0];
+  my $fl  = $_[1];
+  my $ot  = $_[2];
+  my $oet = $_[3];
+  my $ft  = $_[4];
+  my $fet = $_[5];
+  if ($fls eq 'f'){
+    foreach my $xz (0..$#$ot) {
+      foreach my $xy (0..$#$fl) {
+        if ($$ot[$xz] =~ /$$fl[$xy]/){
+          push(@$ft,$$ot[$xz]);
+          push(@$fet,$$oet[$xz]);
+          last;
+        }
+      }
+    }
+  }else{
+    foreach my $xz (0..$#$ot) {
+      foreach my $xy (0..$#$fl) {
+        if ($$ot[$xz] =~ /$$fl[$xy]/){
+          last;
+        }elsif ($$ot[$xz] !~ /$$fl[$xy]/ and $xy == $#$fl){
+          push(@$ft,$$ot[$xz]);
+          push(@$fet,$$oet[$xz]);
           last;
         }
       }
@@ -292,20 +324,20 @@ sub make_fstrict {
   my $ine;
   foreach my $x (0..$#$pt){
     if($x != 0){
-      my $exs = substr($pt->[$x],87,55);
+      my $exs = substr($$pt[$x],87,55);
       if($exs =~ /^[ ]*$/ or $exs =~ /Gleis/){
-        $ini = substr($pt->[$x],0,87);
-        push($t,$ini);
-        $ine = substr($pet->[$x],0,87);
-        push($et,$ine);
+        $ini = substr($$pt[$x],0,87);
+        push(@$t,$ini);
+        $ine = substr($$pet[$x],0,87);
+        push(@$et,$ine);
       }else{
         next;
       }
     }else{
-      $ini = substr($pt->[$x],0,87);
-      push($t,$ini);
-      $ine = substr($pt->[$x],0,87);
-      push($et,$ine);
+      $ini = substr($$pt[$x],0,87);
+      push(@$t,$ini);
+      $ine = substr($$pt[$x],0,87);
+      push(@$et,$ine);
     }
   }
 }
@@ -323,16 +355,16 @@ sub popmax_dual {
   if($nat > $max){
     $diff = $nat - $max;
     while ($diff > 0){
-      $tempvar = pop($ina);
-      $tempvar = pop($inea);
+      $tempvar = pop(@$ina);
+      $tempvar = pop(@$inea);
       $diff--;
     }
   }
   if($ndt > $max){
     $diff = $ndt - $max;
     while ($diff > 0){
-      $tempvar = pop($ind);
-      $tempvar = pop($ined);
+      $tempvar = pop(@$ind);
+      $tempvar = pop(@$ined);
       $diff--;
     }
   }
@@ -348,8 +380,8 @@ sub popmax_sgl {
   if($nt > $max){
     $diff = $nt - $max;
     while ($diff > 0){
-      $tempvar = pop($in);
-      $tempvar = pop($ine);
+      $tempvar = pop(@$in);
+      $tempvar = pop(@$ine);
       $diff--;
     }
   }
@@ -390,8 +422,8 @@ sub read_fahrinfo {
       $begline = sprintf ("%-.55s %-8s %-5s",$station,$word,$currtime);
       $begaline = sprintf("%-86s",$begline);
       $encline = $begaline;
-      push($t,$begaline);
-      push($et,$encline);
+      push(@$t,$begaline);
+      push(@$et,$encline);
       $index = 1;
       next;
     }
@@ -517,8 +549,8 @@ sub read_fahrinfo {
                 }
               }
             }
-            push($t,$fahrt);
-            push($et,$fahrt);
+            push(@$t,$fahrt);
+            push(@$et,$fahrt);
             $def_planzeit = 0;
             $def_realzeit = 0;
             $def_linie = 0;
@@ -584,8 +616,8 @@ sub read_strict {
       $begline = sprintf ("%-.55s %-8s %-5s",$station,$word,$currtime);
       $begaline = sprintf ("%-86s",$begline);
       $encline = $begaline;
-      push($t,$begline);
-      push($et,$encline);
+      push(@$t,$begline);
+      push(@$et,$encline);
       $index = 1;
       next;
     }
@@ -725,8 +757,8 @@ sub read_strict {
                 $fahrt = sprintf("%-5s %-5s %-1s %-4s %-1s %-9s %-55s %-55s",$planzeit,$realzeit,$specifier,$spaced,$product,$linie,$fziel,$spaced) unless ($specifier eq 'x');
               }
             }
-            push($t,$fahrt) unless ($specifier eq 'x');
-            push($et,$fahrt) unless ($specifier eq 'x');
+            push(@$t,$fahrt) unless ($specifier eq 'x');
+            push(@$et,$fahrt) unless ($specifier eq 'x');
             $def_planzeit = 0;
             $def_realzeit = 0;
             $def_linie = 0;
@@ -921,8 +953,8 @@ sub read_strict_p {
               }
             }
             if ($fahrt =~ /$station/){
-              push($t,$fahrt) unless ($specifier eq 'x');
-              push($et,$fahrt) unless ($specifier eq 'x');
+              push(@$t,$fahrt) unless ($specifier eq 'x');
+              push(@$et,$fahrt) unless ($specifier eq 'x');
             }
             $def_planzeit = 0;
             $def_realzeit = 0;
