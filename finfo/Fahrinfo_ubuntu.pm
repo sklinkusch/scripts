@@ -4,7 +4,8 @@ use strict;
 sub add_lbr {
   my $in  = $_[0];
   foreach my $x (0..$#$in){
-    $$in[$x] = sprintf("%s\n",$$in[$x]);
+    $$in[$x] = sprintf("%s\n",$$in[$x]) unless ($x == 0);
+    $$in[$x] = sprintf(" %s\n",$$in[$x]) if ($x == 0);
   }
 }
 
@@ -223,40 +224,6 @@ sub define_specifier {
    return $spec;
 }
 
-sub filter_sgl {
-  my $fls = $_[0];
-  my $fl  = $_[1];
-  my $ot  = $_[2];
-  my $oet = $_[3];
-  my $ft  = $_[4];
-  my $fet = $_[5];
-  push (@$ft,$$ot[0]);
-  push (@$fet,$$oet[0]);
-  if ($fls eq 'f'){
-    foreach my $xz (1..$#$ot) {
-      foreach my $xy (0..$#$fl) {
-        if ($ot->[$xz] =~ /$fl->[$xy]/){
-          push(@$ft,$$ot[$xz]);
-          push(@$fet,$$oet[$xz]);
-          last;
-        }
-      }
-    }
-  }else{
-    foreach my $xz (1..$#$ot) {
-      foreach my $xy (0..$#$fl) {
-        if ($$ot[$xz] =~ /$$fl[$xy]/){
-          last;
-        }elsif ($$ot[$xz] !~ /$$fl[$xy]/ and $xy == $#$fl){
-          push(@$ft,$$ot[$xz]);
-          push(@$fet,$$oet[$xz]);
-          last;
-        }
-      }
-    }
-  }
-}
-
 sub ft_sgl {
   my $fls = $_[0];
   my $fl  = $_[1];
@@ -274,6 +241,34 @@ sub ft_sgl {
     }
   }else{
     foreach my $xz (1..$#$ot) {
+      foreach my $xy (0..$#$fl) {
+        if ($$ot[$xz] =~ /$$fl[$xy]/){
+          last;
+        }elsif ($$ot[$xz] !~ /$$fl[$xy]/ and $xy == $#$fl){
+          push(@$ft,$$ot[$xz]);
+          last;
+        }
+      }
+    }
+  }
+}
+
+sub ft_sgl_p {
+  my $fls = $_[0];
+  my $fl  = $_[1];
+  my $ot  = $_[2];
+  my $ft  = $_[3];
+  if ($fls eq 'f'){
+    foreach my $xz (0..$#$ot) {
+      foreach my $xy (0..$#$fl) {
+        if ($$ot[$xz] =~ /$$fl[$xy]/){
+          push(@$ft,$$ot[$xz]);
+          last;
+        }
+      }
+    }
+  }else{
+    foreach my $xz (0..$#$ot) {
       foreach my $xy (0..$#$fl) {
         if ($$ot[$xz] =~ /$$fl[$xy]/){
           last;
@@ -941,21 +936,17 @@ sub st_entr {
   for (my $x = 0; $x <= ($#$at + $#$bt); $x++){
     if(defined $$at[0] and defined $$bt[0]){
       if($$at[0] lt $$bt[0]){
-        push(@$t,$$at[0]) unless ($x == 0);
-        $$t[$x] = sprintf(" %s",$$at[0]) if ($x == 0);
+        push(@$t,$$at[0]);
         shift(@$at);
       }else{
-        push(@$t,$$bt[0]) unless ($x == 0);
-        $$t[$x] = sprintf(" %s",$$bt[0]) if ($x == 0);
+        push(@$t,$$bt[0]);
         shift(@$bt);
       }
     }elsif(defined $$at[0]){
-      push(@$t,$$at[0]) unless ($x == 0);
-      $$t[$x] = sprintf(" %s",$$at[0]) if ($x == 0);
+      push(@$t,$$at[0]);
       shift(@$at);
     }else{
-      push(@$t,$$bt[0]) unless ($x == 0);
-      $$t[$x] = sprintf(" %s",$$bt[0]) if ($x == 0);
+      push(@$t,$$bt[0]);
       shift(@$bt);
     }
   }
