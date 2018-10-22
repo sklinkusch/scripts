@@ -17,7 +17,7 @@ my $haltestelle = join('',$ARGV[0]);
 my $xnumm = join('',$ARGV[3]);
 my @haltestellenarr = haltnummer($haltestelle);
 my $haltestellenum = $haltestellenarr[1];
-my $haltestellenr = Fahrinfo::get_number($haltestellenum);
+my $haltestellenr = Fahrinfo_ubuntu::get_number($haltestellenum);
 my $station = $haltestellenarr[0];
 
 my $typus = join('',$ARGV[1]);
