@@ -116,7 +116,10 @@ programs intended for the use in theoretical chemistry
 
 ## CIS-CSF
 
-includes the program _istochcis_
+prepatory program for stochasticTDCI based on CIS calculations
+* **istochcis**: reads a binary sys file and a binary dat.hfw or a binary hwf file ⇒ binary sys file
+* **read\_bcs**: reads the binary bcs file and writes data out to the shell
+* **read\_wav**: reads the binary wav file and writes MO energies and coefficients to an output file
 
 ## CIS-D
 
@@ -137,13 +140,45 @@ calculation of the doubles correction on top of configuration interaction single
 
 ## DFT-CSF
 
+prepatory programs for stochasticTDCI based on DFT calculations
+* **iirxdft2**: calculates ionization rates for each electronic state ⇒ irx file
+* **irhodft**: older version of _irhodft_
+* **irhodft2**: reads three binary files: sys, dat.hwf and vec ⇒ binary bcs file and human readable irx file
+* **istochdft**: reads three binary files: sys, dat.hwf and vec ⇒ binary sys file and binary bcs file
+* **read\_bcs**: reads the binary bcs file and writes data out to the shell
+* **read\_wav**: reads the binary wav file and writes MO energies and coefficients to an output file
+
 ## DMP
+
+programs that perform a ρ-TDCI calculation
+* **rhoTDCI.bin**: reads a binary ecp file and (maybe) a binary rst file ⇒ new binary rst file and several human readable files: log, pop, fld, dip, enpop
+* **rhoTDCI.x**: older version of _rhoTDCI.bin_ that reads data from ASCII files instead of the binary ecp file
 
 ## GRIMME-CIDFT
 
+performs calculation according to an algorithm by Stefan Grimme
+* **grimme**
+* **grimme-20**
+
 ## IONRATS
 
+a program calculating the ionzation rates for CIS or CIS(D) states
+* **ionrats**: reading data from human readable ens and vex file as well as from the binary dat.hwf file ⇒ human readable irx file
+
 ## OLD\_CIS3D
+
+the original CIS3D program suite by Tillmann Klamroth and my extensions
+
+* **fft** and **fft\_n**: perform a Fourier transformation of a signal given in an ASCII file
+* **mk\_ff**: reading electric field data from a binary file and performs a Fourier transformation
+* **norm**: reading populations during a laser pulse excitation and calculates the norm as a function of time
+* **quadfkt**: reads (experimental) values and performs two types of regression: linear and quadratical
+* **readwrite\_wav**: reads time-dependent wave function and writes it out for a certain timestep
+* **sep**: separates specified degenerate states from a population file
+
+### CID
+
+* **cid**: performs a configuration interaction doubles (CID) calculation
 
 ## stochasticTDCI
 
