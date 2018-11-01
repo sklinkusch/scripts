@@ -2,6 +2,7 @@ package Fahrinfo;
 use strict;
 use FindBin;
 use Switch;
+use List::Util qw(reduce any all none notall first max maxstr min minstr product sum sum0 pairs unpairs pairkeys pairvalues pairgrep pairfirst pairmap shuffle uniq uniqnum uniqstr);
 
 sub add_linebreaks {
   my $in  = $_[0];
@@ -66,7 +67,8 @@ sub compose_dual {
   my $et = $_[5];
   my $nat = $#inax;
   my $ndt = $#indx;
-  foreach my $xa (0..$nat){
+  my $nz = min($nat,$ndt);
+  foreach my $xa (0..$nz){
     if($xa == 0){
       $$t[$xa] = $inax[$xa];
       $$et[$xa] = " " . $ineax[$xa];
@@ -77,12 +79,12 @@ sub compose_dual {
     }
   }
   if($ndt > $nat){
-    foreach my $xz (($nat+1)..$ndt){
+    foreach my $xz (($nz+1)..$ndt){
       $$t[$xz] = sprintf("%-85s",$main::spaced);
       $$et[$xz] = sprintf("%-85s",$main::spaced);
     }
   }elsif($ndt < $nat){
-    foreach my $xz (($ndt+1)..$nat){
+    foreach my $xz (($nz+1)..$nat){
       push(@indx,"\n");
       push(@inedx,"\n");
     }
