@@ -180,6 +180,13 @@ the original CIS3D program suite by Tillmann Klamroth and my extensions
 
 * **cid**: performs a configuration interaction doubles (CID) calculation
 
+### CIS
+
+* **read\_bcs**: reading energies and dipole moments from a binary bcs file and writes data to stdout
+* **read\_bcs-new**: same as read\_bcs, but bcs file contains only a subset of states
+* **read\_corr**: reads the correlation energy from a bcs file and prints it to stdout
+* **read\_wav**: reads MO energies and coefficients from a binary file and writes them to a log file
+
 ## stochasticTDCI
 
 ## STUFF
