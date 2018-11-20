@@ -7,7 +7,7 @@ use Encode;                            # packages to reencode text
 use open ':encoding(utf8)';                                                      
 use open ':std';                                                                 
 use FindBin;                           # package to find an extra file for modules
-use lib $FindBin::bin;                 # absolute path where extra file is found
+use lib $FindBin::Bin;                 # absolute path where extra file is found
 use Fahrinfo_ubuntu;                   # name of extra file (without .pm ending)
 
 ### set variables
