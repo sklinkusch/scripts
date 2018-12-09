@@ -7,7 +7,7 @@ use Encode;                         # packages to reencode text
 use open ':encoding(utf8)';
 use open ':std';
 use FindBin;                        # package to find an extra file for modules
-use lib $FindBin::Bin;              # absolute path where extra file is found
+use lib $FindBin::RealBin;              # absolute path where extra file is found
 use Fahrinfo_ubuntu;                # name of extra file (without .pm ending), in brackets: loaded subroutines
 
 ### set variables
@@ -76,7 +76,7 @@ sub checkNet {
 #
 sub haltnummer {
   my $halt = shift;                                                                               # read input string
-  open(DATA, "$FindBin::Bin/../data/fahrinfo-elinks2.dat") || die "can't open 'fahrinfo-elinks2.dat'";          # open filestream reading the local file fahrinfo-elinks2.dat
+  open(DATA, "$FindBin::RealBin/../data/fahrinfo-elinks2.dat") || die "can't open 'fahrinfo-elinks2.dat'";          # open filestream reading the local file fahrinfo-elinks2.dat
   my $numma = -1;                                                                                 # number of highest entry in @haltarr and @haltnrarr
   my $str;                                                                                        # UTF-8 decoded version of lines in fahrinfo-elinks2.dat
   my $haltu;                                                                                      # UTF-8 decoded version of $halt
