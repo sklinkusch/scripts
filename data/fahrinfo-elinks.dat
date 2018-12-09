@@ -161,6 +161,7 @@
 "Berlin, Adlergestell/Vetschauer Allee"	9185503
 "Berlin, Adolf-Scheidt-Platz"	9068158
 "Berlin, Adolfstraße"	9175555
+"Berlin, Agathe-Lasch-Platz [Bus]"	9040104
 "Berlin, Ahlener Weg"	9064258
 "Berlin, Ahornallee"	9182503
 "Berlin, Ahrensdorfer Straße"	9073253
@@ -201,6 +202,7 @@
 "Berlin, Alter Schönefelder Weg"	9195520
 "Berlin, Altes Wasserwerk"	9182005
 "Berlin, Altes Wasserwerk [Ausstieg]"	9182705
+"Berlin, Alt-Friedrichsfelde 60"	9161519
 "Berlin, Alt-Friedrichsfelde/Gensinger Straße"	9161005
 "Berlin, Alt-Friedrichsfelde/Rhinstraße"	9161004
 "Berlin, Alt-Gatow"	9038104
@@ -218,7 +220,8 @@
 "Berlin, Altmarkstraße"	9060152
 "Berlin, Alt-Marzahn"	9170516
 "Berlin, Alt-Moabit/Gotzkowskystraße"	9003107
-"Berlin, Alt-Moabit/Rathenauer Straße"	9003203
+"Berlin, Alt-Moabit/Rathaus Tiergarten"	9003157
+"Berlin, Alt-Moabit/Rathenower Straße"	9003203
 "Berlin, Alt-Müggelheim"	9184002
 "Berlin, Alt-Pichelsdorf"	9032402
 "Berlin, Alt-Rudow/Köpenicker Straße"	9083251
@@ -226,6 +229,7 @@
 "Berlin, Alt-Schmöckwitz [Ankunft]"	9185702
 "Berlin, Alt-Schmöckwitz [Endstelle]"	9185701
 "Berlin, Alt-Schönow"	9049374
+"Berlin, Alt-Staaken Kirche"	9037159
 "Berlin, Alt-Stralau"	9120501
 "Berlin, Alt-Treptow"	9190501
 "Berlin, Alt-Wittenau/Roedernallee"	9096404
@@ -414,7 +418,6 @@
 "Berlin, Beuthener Straße"	9143502
 "Berlin, Biberburg"	9032253
 "Berlin, Biesdorfer Promenade"	9171525
-"Berlin, Bildungs- und Verwaltungszentrum"	9161519
 "Berlin, Billy-Wilder-Promenade"	9066251
 "Berlin, Binger Straße"	9045160
 "Berlin, Binzstraße"	9130517
@@ -528,6 +531,7 @@
 "Berlin, Buckower Damm/Ringslebenstraße"	9081203
 "Berlin, Buckower Ring"	9171513
 "Berlin, Budapester Straße"	9005101
+"Berlin, Buddestraße"	9089451
 "Berlin, Bühler Weg"	9081151
 "Berlin, Bulgarische Straße"	9190002
 "Berlin, Bundesarchiv"	9066302
@@ -632,6 +636,7 @@
 "Berlin, Dominicusstraße/Hauptstraße"	9054107
 "Berlin, Dominikus-Krankenhaus"	9092256
 "Berlin, Domnauer Straße"	9058152
+"Berlin, Dönhoffstraße"	9162717
 "Berlin, Donizettistraße"	9176511
 "Berlin, Donizettistraße/Lemkestraße"	9176502
 "Berlin, Donizettistraße/Straußstraße"	9176503
@@ -1040,7 +1045,6 @@
 "Berlin, Hasselwerderstraße"	9192505
 "Berlin, Hatzfeldtallee"	9089455
 "Berlin, Haubachstraße"	9022105
-"Berlin, Hauptstraße"	9037159
 "Berlin, Hauptstraße/Berliner Straße"	9133501
 "Berlin, Hauptstraße/Friedrich-Engels-Straße"	9132010
 "Berlin, Hauptstraße/Martin-Luther-Straße"	9054173
@@ -1099,7 +1103,6 @@
 "Berlin, Hellersdorfer Straße/Gülzower Straße"	9175556
 "Berlin, Helmholtzstraße"	9021181
 "Berlin, Helsingforser Platz"	9120020
-"Berlin, Hentigstraße [Dönhoffstraße]"	9162717
 "Berlin, Herbertstraße"	9048156
 "Berlin, Herbststraße"	9085265
 "Berlin, Herkomerstraße"	9190503
@@ -1424,7 +1427,6 @@
 "Berlin, Kulturforum"	9005255
 "Berlin, Künnekeweg"	9083357
 "Berlin, Kuno-Fischer-Straße"	9024151
-"Berlin, Kurfürstendamm/Joachim-Friedrich-Straße [Bus]"	9040104
 "Berlin, Kurpromenade"	9039159
 "Berlin, Kurstraße"	9052305
 "Berlin, Kurzebracker Weg"	9091104
@@ -1515,7 +1517,6 @@
 "Berlin, Lindenberger Weg"	9135505
 "Berlin, Lindenberger Weg/Stadtgrenze"	9135011
 "Berlin, Lindenhof"	9058105
-"Berlin, Lindenstraße"	9064271
 "Berlin, Lindenstraße [Busendstelle]"	9064771
 "Berlin, Lindenstraße/Oranienstraße"	9012104
 "Berlin, Lindenstraße/Waltersdorfer Straße"	9196501
@@ -1801,7 +1802,7 @@
 "Berlin, Olafstraße"	9093253
 "Berlin, Olbendorfer Weg"	9096408
 "Berlin, Olivaer Platz"	9023304
-"Berlin, Olivaer Platz Süd"	9023306
+"Berlin, Olivaer Platz/Xantener Straße"	9023306
 "Berlin, Ollenhauerstraße"	9086150
 "Berlin, Ollenhauerstraße/Lindauer Allee"	9086105
 "Berlin, Onkel-Herse-Straße"	9080452
@@ -2317,7 +2318,6 @@
 "Berlin, Schaltwerk"	9036151
 "Berlin, Schappachstraße"	9185505
 "Berlin, Scharfestraße"	9050203
-"Berlin, Scharnhorststraße/Habersaathstraße"	9100502
 "Berlin, Scharnweberstraße/Weichselstraße"	9120540
 "Berlin, Scheffelstraße/Paul-Junius-Straße"	9160538
 "Berlin, Schererstraße"	9008158
@@ -2566,7 +2566,6 @@
 "Berlin, Tauernallee/Säntisstraße"	9070401
 "Berlin, Taunusstraße"	9074253
 "Berlin, Techowpromenade"	9096454
-"Berlin, Tegel-Center"	9089451
 "Berlin, Tegeler Brücke"	9089603
 "Berlin, Tegeler Weg/S Jungfernheide"	9020207
 "Berlin, Tegelgrund"	9089252
@@ -2983,6 +2982,7 @@
 "Berlin, Winsstraße"	9110512
 "Berlin, Winterfeldtplatz"	9056152
 "Berlin, Wirmerzeile"	9019252
+"Berlin, Wismarer Straße"	9064271
 "Berlin, Wismarplatz"	9120518
 "Berlin, Wittekindstraße"	9068343
 "Berlin, Wittelsbacherstraße/Augsburger Straße"	9074264
