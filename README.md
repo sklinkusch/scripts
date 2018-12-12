@@ -262,6 +262,14 @@ programs to perform OCT calculations, based on a CIS calculation
 - **mk_field**: generate binary file containing initial field
 - **mk_init_wav**: generate binary file containing the initial wave function
 
+### PACKETS
+
+see _OCT_
+
+### POPULS
+
+see _OCT_
+
 ## stochasticTDCI
 
 ## STUFF
