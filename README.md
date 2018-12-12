@@ -254,6 +254,14 @@ programs to perform CIS calculations with an ionization scheme based on configur
 - **tdpop**: time-dependent populations
 - **tdrhf**: propagate the HF wave function in time
 
+### OCT
+
+programs to perform OCT calculations, based on a CIS calculation
+
+- **cis_oct**: main program
+- **mk_field**: generate binary file containing initial field
+- **mk_init_wav**: generate binary file containing the initial wave function
+
 ## stochasticTDCI
 
 ## STUFF
