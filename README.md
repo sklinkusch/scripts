@@ -240,6 +240,20 @@ programs to perform OCT calculations, based on a CIS calculation including the p
 - **mk_field**: generate binary file containing the initial field
 - **mk_init_wav**: generate binary file containing the initial wave function
 
+### GAMMA-STATES
+
+programs to perform CIS calculations with an ionization scheme based on configuration state functions
+
+- **cis**: make a CIS calculation
+- **mk_field**: make an initial field
+- **mk_in**: read integrals from a GAMESS calculation
+- **mk_init_wav**: make initial wave function
+- **rgw**: read the molecular orbitals' data from an ASCII file and write it to a binary file
+- **rhf**: perform a restricted Hartree-Fock calculation to get a binary file containing the molecular orbitals' data
+- **tdcis**: propagate the CIS wave function in time within a possible laser field
+- **tdpop**: time-dependent populations
+- **tdrhf**: propagate the HF wave function in time
+
 ## stochasticTDCI
 
 ## STUFF
