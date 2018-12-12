@@ -272,6 +272,11 @@ see _OCT_
 
 ## stochasticTDCI
 
+programs to perform stochastic propagations based on the TD-CI algorithm, CIS or DFT calculation data can be the basis
+
+- **sTDCI.x**: main program with improved I/O settings
+- **old/sTDCIold.x**: main program with standard I/O settings
+
 ## STUFF
 
 ## VOOCIS
