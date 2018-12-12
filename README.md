@@ -217,9 +217,23 @@ programs performing laser pulse optimizations according to the _Optimal Control 
 - **mk_init_wav**: make an initial CIS wave function
 - **mk_init_wav-cisd**: make an initial CISD wave function
 
+### GAMMA-CSFS
+
+programs to perform CIS calculations with an ionization scheme based on configuration state functions
+
+- **cis**: make a CIS calculation
+- **mk_field**: make an initial field
+- **mk_in**: read integrals from a GAMESS calculation
+- **mk_init_wav**: make initial wave function
+- **rgw**: read the molecular orbitals' data from an ASCII file and write it to a binary file
+- **rhf**: perform a restricted Hartree-Fock calculation to get a binary file containing the molecular orbitals' data
+- **tdcis**: propagate the CIS wave function in time within a possible laser field
+- **tdpop**: time-dependent populations
+- **tdrhf**: propagate the HF wave function in time
+
 ### GAMMA-OCT
 
-programs to perform OCT calculations, based on a CIS calculation including the photoionization algorithm according to S. Klinkusch, P. Saalfrank, and T. Klamroth, _The Jourrnal of Chemical Physics_ **131**, 114304 (2009)
+programs to perform OCT calculations, based on a CIS calculation including the photoionization algorithm according to S. Klinkusch, P. Saalfrank, and T. Klamroth, _The Journal of Chemical Physics_ **131**, 114304 (2009)
 
 - **cis_oct**: main program
 - **mk_ef**: read binary electronic field file
