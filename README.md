@@ -279,6 +279,27 @@ programs to perform stochastic propagations based on the TD-CI algorithm, CIS or
 
 ## STUFF
 
+some useful, but unrelated perl scripts:
+
+- **analysis-dipoles.pl**: reads the data of the respective eigenstates from a log file and writes it into a data file
+- **config_decoder.pl**: associates a configuration to a CSF number
+- **diffendat.pl**: calculates energy differences between consecutive states
+
+* **get_ccsdenergy.pl**: reads the coupled-cluster singles doubles energy from a log file
+* **get_dftinfo.pl**: reads the eigenenergies, configurations, upward and downward rates from a log file
+* **get_dipoles.pl**: reads the dipole data from a log file and prints an overview
+* **get_energies.pl**: reads the energies from a GAMESS log file and a CIS(D) log file, prints an overview
+* **get_enpops.pl**: get a population profile for certain states
+* **get_freqs.pl**: get IR frequencies with respective intensities from a log file
+* **get_initialstate.pl**: compute probability to excite a system from state _i_ to a target state
+* **sort-diffkin.pl**: analyzes a differential spectrum to get kinetic energy data
+* **sort_dftexc.pl**: reads the configuration state functions (and coefficients) from a TD-DFT calculation log file
+* **sort_eigenvectors.pl**: reads eigenvectors of the CI states and prints the absolute value
+* **sortexc.pl**: finds the states a certain CSF is part of and prints them as a list
+* **sortexc2.pl**: finds the CSFs for a certain state and prints them as a list
+* **statestobands.pl**: reads the populations of different states as bands
+* **zuordnung.pl**: prints a list which state belongs to which isomer in a mixture of both
+
 ## VOOCIS
 
 ## WRITEBCS
