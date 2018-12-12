@@ -300,6 +300,17 @@ some useful, but unrelated perl scripts:
 * **statestobands.pl**: reads the populations of different states as bands
 * **zuordnung.pl**: prints a list which state belongs to which isomer in a mixture of both
 
+some useful but unrelated Bash scripts:
+
+- **get_dipoles.sh**: same as _get_dipoles.pl_
+
+some useful but unrelated C++ programs:
+
+- **bcs2coup**: reads a binary bcs file and writes dipole moments, relaxation and dephasing rates into an output file
+
+* **bcs2ecp** and **bcs2ecp-v2**: reads a binary bcs file and transforms it to a binary ecp file
+* **bcs2ecp-ic**: reads a binary bcs file and transforms it to a binary ecp file (relaxation, dephasing, and internal conversion included)
+
 ## VOOCIS
 
 ## WRITEBCS
