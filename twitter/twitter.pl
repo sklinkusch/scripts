@@ -69,7 +69,7 @@ while ( my $line = <LIST> ){
    push(@names,$nam);
 }
 my $shortmode = substr($modus,0,1);
-system ("sh $FindBin::Bin/twitter.sh $browser $shortmode @names");
+system ("/bin/bash $FindBin::Bin/twitter.sh $browser $shortmode @names");
 
 sub split_date {
  my $str = shift;
