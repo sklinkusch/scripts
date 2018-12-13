@@ -252,38 +252,88 @@ sub filter_sgl {
   my $and = 0;
   my @open;
   my @close;
+  my @prt;
+  my @pret;
   push (@$ft,$$ot[0]);
   push (@$fet,$$oet[0]);
   $and = 1 if (join(' ',@$fl) =~ /[\{\}]/);
   if ($and == 1){
     foreach my $xz (0..$#$fl){
-      push(@open,$xz) if($$fl[$xz] =~ /^\{.+$/);
-      push(@close,$xz) if($$fl[$xz] =~ /^.+\}$/);
+      if ($$fl[$xz] =~ /^\{.+$/){
+        push(@open,$xz);
+        $$fl[$xz] = substr($$fl[$xz],2);
+      }
+      if ($$fl[$xz] =~ /^.+\}$/){
+        push(@close,$xz);
+        $/ = "\}";
+        chomp($$fl[$xz]);
+      }
+    }
+    main::print_exit() if(($#open - $#close) != 0);
+    foreach my $xz (0..$#open){
+      main::print_exit() if(($close[$xz] - $open[$xz]) != 1);
+    }
+    if ($fls eq 'f'){
+      foreach my $xz (1..$#$ot){
+        foreach my $xy (0..$#open){
+          if ($$ot[$xz] =~ /$$fl[$open[$xy]]/ and $$ot[$xz] =~ /$$fl[$close[$xy]]/){
+            push(@prt,$$ot[$xz]);
+            push(@pret,$$oet[$xz]);
+            last;
+          }
+        }
+      }
+    }else{
+      foreach my $xz (1..$#$ot){
+        foreach my $xy (0..$#open){
+          if ($$ot[$xz] =~ /$$fl[$open[$xy]]/ and $$ot[$xz] =~ /$$fl[$close[$xy]]/){
+            $$ot[$xz]  = undef;
+            $$oet[$xz] = undef;
+            last;
+          }
+        }
+      }
+    }
+    foreach my $xy (0..$#open){
+      $$fl[$open[$xy]]   = undef;
+      $$fl[$close[$xy]] = undef;
     }
   }
   if ($fls eq 'f'){
     foreach my $xz (1..$#$ot) {
       foreach my $xy (0..$#$fl) {
-        if ($$ot[$xz] =~ /$$fl[$xy]/){
-          push(@$ft,$$ot[$xz]);
-          push(@$fet,$$oet[$xz]);
-          last;
+        if (defined $$fl[$xy]){
+          if ($$ot[$xz] =~ /$$fl[$xy]/){
+            push(@prt,$$ot[$xz]);
+            push(@pret,$$oet[$xz]);
+            last;
+          }
         }
       }
     }
   }else{
     foreach my $xz (1..$#$ot) {
       foreach my $xy (0..$#$fl) {
-        if ($$ot[$xz] =~ /$$fl[$xy]/){
-          last;
-        }elsif ($$ot[$xz] !~ /$$fl[$xy]/ and $xy == $#$fl){
-          push(@$ft,$$ot[$xz]);
-          push(@$fet,$$oet[$xz]);
-          last;
+        if (defined $$fl[$xy]){
+          if ($$ot[$xz] =~ /$$fl[$xy]/){
+            $$ot[$xz]  = undef;
+            $$oet[$xy] = undef;
+            last;
+          }
         }
       }
     }
+    foreach my $xy (1..$#$ot) {
+      if (defined $$ot[$xy]) {
+        push(@prt,$$ot[$xy]);
+        push(@pret,$$oet[$xy]);
+      }
+    }
   }
+  my @prt_s  = sort {$a cmp $b} @prt;
+  my @pret_s = sort {$a cmp $b} @pret;
+  @$ft  = ($$ot[0], @prt_s);
+  @$fet = ($$oet[0], @pret_s);
 }
 
 sub filter_sgl_p {
