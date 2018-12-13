@@ -310,6 +310,15 @@ some useful but unrelated C++ programs:
 
 * **bcs2ecp** and **bcs2ecp-v2**: reads a binary bcs file and transforms it to a binary ecp file
 * **bcs2ecp-ic**: reads a binary bcs file and transforms it to a binary ecp file (relaxation, dephasing, and internal conversion included)
+* **bcs2ens**: reads a binary bcs file and prints CIS(D) energies into an ASCII output file
+* **calc_HFdens**: reads a binary file, calculates the Hartree-Fock densities and writes them to another binary file
+* **calc_ecorr**: calculates the correlation energy from the Hartree-Fock density
+* **calc_excit**: calculates the excitation energies from the Hartree-Fock density
+* **calc_fluct**: calculates the fluctuations from the Hartree-Fock density
+* **calc_hcorr**: calculates the correction of H from the Hartree-Fock density
+* **calc_pi-params**: calculates the parameters for an optimal &pi; pulse
+* **cispektrum**: calculates a UV/Vis spectrum from a bcs file and writes the coordinates into the terminal
+* **cisspektrum**: reads energies and oscillator strengths from a eaf file, calculates a UV/Vis spectrum, and writes it to a spec file
 
 ## VOOCIS
 
