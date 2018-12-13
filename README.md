@@ -284,7 +284,7 @@ some useful, but unrelated perl scripts:
 - **analysis-dipoles.pl**: reads the data of the respective eigenstates from a log file and writes it into a data file
 - **config_decoder.pl**: associates a configuration to a CSF number
 - **diffendat.pl**: calculates energy differences between consecutive states
-
+* **floattodec.pl**: convert three columns of floats into decimal numbers
 * **get_ccsdenergy.pl**: reads the coupled-cluster singles doubles energy from a log file
 * **get_dftinfo.pl**: reads the eigenenergies, configurations, upward and downward rates from a log file
 * **get_dipoles.pl**: reads the dipole data from a log file and prints an overview
@@ -319,6 +319,10 @@ some useful but unrelated C++ programs:
 * **calc_pi-params**: calculates the parameters for an optimal &pi; pulse
 * **cispektrum**: calculates a UV/Vis spectrum from a bcs file and writes the coordinates into the terminal
 * **cisspektrum**: reads energies and oscillator strengths from a eaf file, calculates a UV/Vis spectrum, and writes it to a spec file
+* **dipole-weight**: reads dipole moments from a binary ecp file, populations from pop file, calculates a total weighted dipole moment, and
+prints it to the terminal
+* **energyscheme**: reads a file containing the energies in rows and writes a file with the energies in columns to build a graphical energy scheme
+* **genmatc**: generates a binary file containing the ionization rates, dipole moments, relaxation and dephasing rates
 
 ## VOOCIS
 
