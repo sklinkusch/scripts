@@ -249,8 +249,18 @@ sub filter_sgl {
   my $oet = $_[3];
   my $ft  = $_[4];
   my $fet = $_[5];
+  my $and = 0;
+  my @open;
+  my @close;
   push (@$ft,$$ot[0]);
   push (@$fet,$$oet[0]);
+  $and = 1 if (join(' ',@$fl) =~ /[\{\}]/);
+  if ($and == 1){
+    foreach my $xz (0..$#$fl){
+      push(@open,$xz) if($$fl[$xz] =~ /^\{.+$/);
+      push(@close,$xz) if($$fl[$xz] =~ /^.+\}$/);
+    }
+  }
   if ($fls eq 'f'){
     foreach my $xz (1..$#$ot) {
       foreach my $xy (0..$#$fl) {
