@@ -252,6 +252,8 @@ sub filter_sgl {
   my $and = 0;
   my @open;
   my @close;
+  my @ort = @$ot;
+  my @oret = @$oet;
   my @prt;
   my @pret;
   push (@$ft,$$ot[0]);
@@ -330,10 +332,15 @@ sub filter_sgl {
       }
     }
   }
-  my @prt_s  = sort {$a cmp $b} @prt;
-  my @pret_s = sort {$a cmp $b} @pret;
-  @$ft  = ($$ot[0], @prt_s);
-  @$fet = ($$oet[0], @pret_s);
+  foreach my $xy (1..$#ort){
+    foreach my $xz (0..$#prt){
+      if ($ort[$xy] eq $prt[$xz]){
+        push(@$ft,$ort[$xy]);
+        push(@$fet,$oret[$xy]);
+        last;
+      }
+    }
+  }
 }
 
 sub filter_sgl_p {
