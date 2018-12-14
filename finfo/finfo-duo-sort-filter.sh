@@ -24,4 +24,4 @@ fspec=$1
 shift
 filter="$*"
 
- watch -tn 15 $DIR/finfo-filter.pl \"$astat\" \"$bstat\" $mod $prod $alnr $blnr $fspec "$filter"
+ watch -tn 15 $DIR/finfo-duo-sort-filter.pl \"$astat\" \"$bstat\" $mod $prod $alnr $blnr $fspec "$filter"
