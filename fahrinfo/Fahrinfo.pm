@@ -263,7 +263,7 @@ sub filter_sgl {
     foreach my $xz (0..$#$fl){
       if ($$fl[$xz] =~ /^\{.+$/){
         push(@open,$xz);
-        $$fl[$xz] = substr($$fl[$xz],2);
+        $$fl[$xz] = substr($$fl[$xz],1);
       }
       if ($$fl[$xz] =~ /^.+\}$/){
         push(@close,$xz);
