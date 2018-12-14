@@ -231,25 +231,86 @@ sub ft_sgl {
   my $fl  = $_[1];
   my $ot  = $_[2];
   my $ft  = $_[3];
+  my $and = 0;
+  my @open;
+  my @close;
+  my @ort = @$ot;
+  my @prt;
   push (@$ft,$$ot[0]);
+  $and = 1 if (join(' ',@$fl) =~ /[\{\}]/);
+  if ($and == 1){
+    foreach my $xz (0..$#$fl){
+      if ($$fl[$xz] =~ /^\{.+$/){
+        push(@open,$xz);
+        $$fl[$xz] = substr($$fl[$xz],1);
+      }
+      if ($$fl[$xz] =~ /^.+\}$/){
+        push(@close,$xz);
+        $/ = "\}";
+        chomp($$fl[$xz]);
+      }
+    }
+    main::print_exit() if(($#open - $#close) != 0);
+    foreach my $xz (0..$#open){
+      main::print_exit() if(($close[$xz] - $open[$xz]) != 1);
+    }
+    if ($fls eq 'f'){
+      foreach my $xz (1..$#$ot){
+        foreach my $xy (0..$#open){
+          if ($$ot[$xz] =~ /$$fl[$open[$xy]]/ and $$ot[$xz] =~ /$$fl[$close[$xy]]/){
+            push(@prt,$$ot[$xz]);
+            last;
+          }
+        }
+      }
+    }else{
+      foreach my $xz (1..$#$ot){
+        foreach my $xy (0..$#open){
+          if ($$ot[$xz] =~ /$$fl[$open[$xy]]/ and $$ot[$xz] =~ /$$fl[$close[$xy]]/){
+            $$ot[$xz]  = undef;
+            last;
+          }
+        }
+      }
+    }
+    foreach my $xy (0..$#open){
+      $$fl[$open[$xy]]   = undef;
+      $$fl[$close[$xy]] = undef;
+    }
+  }
   if ($fls eq 'f'){
     foreach my $xz (1..$#$ot) {
       foreach my $xy (0..$#$fl) {
-        if ($$ot[$xz] =~ /$$fl[$xy]/){
-          push(@$ft,$$ot[$xz]);
-          last;
+        if (defined $$fl[$xy]){
+          if ($$ot[$xz] =~ /$$fl[$xy]/){
+            push(@prt,$$ot[$xz]);
+            last;
+          }
         }
       }
     }
   }else{
     foreach my $xz (1..$#$ot) {
       foreach my $xy (0..$#$fl) {
-        if ($$ot[$xz] =~ /$$fl[$xy]/){
-          last;
-        }elsif ($$ot[$xz] !~ /$$fl[$xy]/ and $xy == $#$fl){
-          push(@$ft,$$ot[$xz]);
-          last;
+        if (defined $$fl[$xy]){
+          if ($$ot[$xz] =~ /$$fl[$xy]/){
+            $$ot[$xz]  = undef;
+            last;
+          }
         }
+      }
+    }
+    foreach my $xy (1..$#$ot) {
+      if (defined $$ot[$xy]) {
+        push(@prt,$$ot[$xy]);
+      }
+    }
+  }
+  foreach my $xy (1..$#ort){
+    foreach my $xz (0..$#prt){
+      if ($ort[$xy] eq $prt[$xz]){
+        push(@$ft,$ort[$xy]);
+        last;
       }
     }
   }
