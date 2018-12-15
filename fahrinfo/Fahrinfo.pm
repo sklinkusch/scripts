@@ -1409,18 +1409,20 @@ sub sort_entries_n {
   # sort arrays (ASCII procedure)
     @testarr_s = sort {$a cmp $b} @testarr;
     @testarre_s = sort {$a cmp $b} @testarre;
-    if ($time =~ /^2/ and $testarr_s[0] =~ /^0/){
-      foreach my $zz ($#testarr..0){
+    if ($time =~ /^2/ and $testarr_s[0] =~ /^0/ and $testarr_s[$#testarr_s] !~ /^0/){
+      my $zz = $#testarr;
+      while ($zz >= 0) {
         if($testarr_s[$zz] =~ /^0/){
           foreach my $zy (1..($#testarr-$zz)){
             if (defined $testarr[($zz+$zy)]){
               push(@$t,$testarr_s[($zz+$zy)]);
               push(@$et,$testarre_s[($zz+$zy)]);
               last;
-              last;
             }
           }
+          last;
         }
+        $zz--;
       }
     }else{
       foreach my $zz (0..$#testarr){
