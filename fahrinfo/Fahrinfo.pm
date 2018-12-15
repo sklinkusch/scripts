@@ -1108,6 +1108,210 @@ sub read_strict_p {
   }
 }
 
+sub read_strict_pn {
+  my $fs = $_[0];
+  my $first = $_[1];
+  my $station = $_[2];
+  my $t = $_[3];
+  my $et = $_[4];
+  my @pt;
+  my @pet;
+  my $index = 0;
+  my $def_fahrtziel = 0;
+  my $def_planzeit = 0;
+  my $def_realzeit = 0;
+  my $def_linie = 0;
+  my $def_extra = 0;
+  my $skip_request = 0;
+  my $fahrtziel;
+  my $planzeit;
+  my $realzeit;
+  my $linie;
+  my $specifier;
+  my $extra_stop;
+  my $difftime;
+  my $currtime;
+  my $begline;
+  my $begaline;
+  my $encline;
+  my $product;
+  my $spaced = ' ';
+  while (my $line = <$fs>) {
+    if ( $line !~ /Abfahrt \(/ and $line !~ /Ankunft \(/ and $index == 0) {
+      next;
+    }
+    if ( $line =~ /Abfahrt \(/ or $line =~ /Ankunft \(/){
+      $line =~ /(A[bn][fk][au][hn][rf]t) \(([012][0-9]\:[012345][0-9])/;
+      my $word = $1;
+      $currtime = $2;
+      $begline = sprintf ("%-.55s %-8s %-5s",$station,$word,$currtime);
+      $begaline = sprintf ("%-86s",$begline);
+      $encline = $begaline;
+#      push($t,$begline);
+#      push($et,$encline);
+      $index = 1;
+      next;
+    }
+    if ( $index == 1 and $line !~ /References/) {
+      my $curline = Fahrinfo::subst_text($line);
+      if ($curline =~ /In Richtung/ or $curline =~ /Aus Richtung/) {
+        next;
+      }
+      if ($curline =~ /[ ]{10,24}[A-Za-z\,\-\.0-9\/\+\(\)\[\] ]{8,65}/ and $curline !~ /Zwischenhalte/ and $curline !~ /[012][0-9]\:[012345][0-9]/ and $curline !~ / (Jan|Feb|Mär|Apr|Mai|Jun|Jul|Aug|Sep|Okt|Nov|Dez) / and $curline !~ /taeglich/ and $curline !~ / (Mo|Di|Mi|Do|Fr|Sa|So) / and $curline !~ /Haltestelle\/Gleis/){ # and $def_fahrtziel == 0 and $def_linie == 0 and $def_planzeit == 0 and $def_realzeit == 0) {
+        $curline =~ /([ ]{10,24})([A-Za-z\,\.\-0-9\/\+\(\)\[\] ]*)/;
+        $fahrtziel = $2;
+        $def_fahrtziel = 1;
+        next;
+      }
+      if ($def_fahrtziel == 1){
+        if ($curline =~ /^[ ]{1,5}[012][0-9]\:[012345][0-9]/){
+          if ($curline =~ /^[ ]{1,5}[012][0-9]\:[012345][0-9] [012][0-9]\:[012345][0-9][ ]{1,}[A-Z]{0,3}[ ]?[0-9]{0,5}[ ]*[012][0-9]\:[012345][0-9][ ]*[A-Za-z0-9\,\.\-\/\+\(\)\[\] ]*Haltestelle\/Gleis [A-Za-z0-9\,\.\-\+\/\(\)\[\]]*/){
+            $curline =~ /^([ ]{1,5})([012][0-9]\:[012345][0-9])[ ]{1}([012][0-9]\:[012345][0-9])([ ]{1,})([A-Z]{0,3}[ ]?[0-9]{0,5})[ ]*[012][0-9]\:[012345][0-9][ ]*[A-Za-z0-9\,\.\-\/\+\(\)\[\] ]*Haltestelle\/Gleis ([A-Za-z0-9\,\.\-\+\/\(\)\[\] ]*)/;
+            $planzeit = $2;
+            $def_planzeit = 1;
+            $realzeit = $3;
+            $def_realzeit = 1;
+            $linie = $5;
+            $def_linie = 1;
+            $product = Fahrinfo::define_product($linie,$fahrtziel);
+            $extra_stop = $6;
+            $def_extra = 1;
+            $difftime = Fahrinfo::calculate_differenz($planzeit, $realzeit);
+            $specifier = Fahrinfo::define_specifier($difftime, $product,$currtime);
+          }elsif ($curline =~ /^[ ]{1,5}[012][0-9]\:[012345][0-9] [012][0-9]\:[012345][0-9]/ and $def_planzeit == 0 and $def_realzeit == 0 and $def_linie == 0){
+            $curline =~ /([ ]{1,5})([012][0-9]\:[012345][0-9])[ ]{1}([012][0-9]\:[012345][0-9])([ ]{1,})([A-Z]{0,3}[ ]?[0-9]{0,5})[ ]*[012][0-9]\:[012345][0-9]/;
+            $planzeit = $2;
+            $def_planzeit = 1;
+            $realzeit = $3;
+            $def_realzeit = 1;
+            $linie = $5;
+            $def_linie = 1;
+            $product = Fahrinfo::define_product($linie,$fahrtziel);
+            $difftime = Fahrinfo::calculate_differenz($planzeit, $realzeit);
+            $specifier = Fahrinfo::define_specifier($difftime, $product,$currtime);
+          }elsif ($curline =~ /^[ ]{1,5}([012][0-9]\:[012345][0-9])[ ]{1}([A-Z]{0,3}[ ]?[0-9]{0,5})[ ]{1,}[012][0-9]\:[012345][0-9][ ]*[A-Za-z0-9\,\.\-\/\+\(\)\[\] ]*Haltestelle\/Gleis ([A-Za-z0-9\,\.\-\+\/\(\)\[\] ]*)/ and $def_planzeit == 0 and $def_realzeit == 0 and $def_linie == 0){
+            $curline =~ /^[ ]{1,5}([012][0-9]\:[012345][0-9])[ ]{1}([A-Z]{0,3}[ ]?[0-9]{0,5})[ ]{1,}[012][0-9]\:[012345][0-9][ ]*[A-Za-z0-9\,\.\-\/\+\(\)\[\] ]*Haltestelle\/Gleis ([A-Za-z0-9\,\.\-\+\/\(\)\[\] ]*)/;
+            $planzeit = $1;
+            $def_planzeit = 1;
+            $realzeit = '-----';
+            $def_realzeit = 1;
+            $linie = $2;
+            $def_linie = 1;
+            $product = Fahrinfo::define_product($linie,$fahrtziel);
+            $difftime = undef;
+            $specifier = '?';
+            $extra_stop = $3;
+            $def_extra = 1;
+          }elsif ($curline =~ /Ausfall/ and $def_planzeit == 0 and $def_realzeit == 0 and $def_linie == 0){
+            $curline =~ /([ ]{3})([012][0-9]\:[012345][0-9])[ ]{1}(Ausfall)([ ]*)([A-Z]{0,3}[ ]?[0-9]{0,5})[ ]*[012][0-9]\:[012345][0-9]/;
+            $planzeit = $2;
+            $def_planzeit = 1;
+            $realzeit = 'XXXXX';
+            $def_realzeit = 1;
+            $linie = $5;
+            $def_linie = 1;
+            $specifier = 'X';
+            $difftime = undef;
+            my $resttime = Fahrinfo::calculate_differenz($planzeit, $currtime);
+#            if ($resttime >= 30){
+#              $def_planzeit = 0;
+#              $def_realzeit = 0;
+#              $def_linie = 0;
+#              $def_fahrtziel = 0;
+#              next;
+#            } 
+          }elsif ($curline =~ /Zusatzfahrt/ and $def_planzeit == 0 and $def_realzeit == 0 and $def_linie == 0){
+            $curline =~ /([ ]{3})([012][0-9]\:[012345][0-9])([ ]{1})(Zusatzfahrt)([ ]{1,})([A-Z]{0,3}[ ]?[0-9]{0,5})[ ]{1,}([012][0-9]\:[012345][0-9])/;
+            $planzeit = $2;
+            $def_planzeit = 1;
+            $skip_request = 1;
+            if (defined $6 and length($6) > 0){
+              $linie = $6;
+              $def_linie = 1;
+              $product = Fahrinfo::define_product($linie,$fahrtziel);
+            }
+            next;
+          }elsif ($skip_request == 1 and $def_planzeit == 1 and $def_realzeit == 0){
+            $curline =~ /([ ]{3})([012][0-9]\:[012345][0-9])([ ]{1,})([A-Z]{0,3}[ ]?[0-9]{0,5})[ ]{1}[012][0-9]\:[012345][0-9]/;
+            $realzeit = $2;
+            $def_realzeit = 1;
+            if ($def_linie == 0){
+              $linie = $4;
+              $def_linie = 1;
+              $product = Fahrinfo::define_product($linie,$fahrtziel);
+            }
+            $specifier = 'Z';
+            $difftime = Fahrinfo::calculate_differenz($planzeit,$realzeit);
+            $skip_request = 0;
+          }elsif ($skip_request == 0 and $def_planzeit == 0 and $def_realzeit == 0 and $def_linie == 0 and $curline =~ /Haltestelle\/Gleis/) {
+            $curline =~ /^([ ]{1,5})([012][0-9]\:[012345][0-9])([\s]*)([A-Z]{0,3}[ ]?[0-9]{0,5}) /;
+            $planzeit = $2;
+            $def_planzeit = 1;
+            $realzeit = '-----';
+            $def_realzeit = 1;
+            $linie = $4;
+            $def_linie = 1;
+            $product = Fahrinfo::define_product($linie,$fahrtziel);
+            $specifier = '?';
+            $difftime = undef;
+            $curline =~ /Haltestelle\/Gleis ([A-Za-z0-9\+\-\.\,\/\(\)\[\] ]*)/;
+            $extra_stop = $1;
+            $def_extra = 1;
+          }elsif ($skip_request == 0 and $def_planzeit == 0 and $def_realzeit == 0 and $def_linie == 0) {
+            $curline =~ /^([ ]{1,5})([012][0-9]\:[012345][0-9])([\s]*)([A-Z]{0,3}[ ]?[0-9]{0,5}) /;
+            $planzeit = $2;
+            $def_planzeit = 1;
+            $realzeit = '-----';
+            $def_realzeit = 1;
+            $linie = $4;
+            $def_linie = 1;
+            $product = Fahrinfo::define_product($linie,$fahrtziel);
+            $specifier = '?';
+            $difftime = undef;
+          }
+          if ($def_planzeit == 1 and $def_realzeit == 1 and $def_linie == 1) {
+            my $fahrt;
+            if ($def_extra == 1 and defined $extra_stop){
+              if (defined $difftime){
+                my $fziel = Fahrinfo::remove_blanks($fahrtziel);
+                $fahrt = sprintf("%-5s %-5s %-1s %+4d %-1s %-9s %-55s %-55s",$planzeit,$realzeit,$specifier,$difftime,$product,$linie,$fziel,$extra_stop) unless ($specifier eq 'x');
+              }else{
+                my $fziel = Fahrinfo::remove_blanks($fahrtziel);
+                $fahrt = sprintf("%-5s %-5s %-1s %-4s %-1s %-9s %-55s %-55s",$planzeit,$realzeit,$specifier,$spaced,$product,$linie,$fziel,$extra_stop) unless ($specifier eq 'x');
+              }
+            }else{
+              if (defined $difftime){
+                my $fziel = Fahrinfo::remove_blanks($fahrtziel);
+                $fahrt = sprintf("%-5s %-5s %-1s %+4d %-1s %-9s %-55s %-55s",$planzeit,$realzeit,$specifier,$difftime,$product,$linie,$fziel,$station) unless ($specifier eq 'x');
+              }else{
+                my $fziel = Fahrinfo::remove_blanks($fahrtziel);
+                $fahrt = sprintf("%-5s %-5s %-1s %-4s %-1s %-9s %-55s %-55s",$planzeit,$realzeit,$specifier,$spaced,$product,$linie,$fziel,$station) unless ($specifier eq 'x');
+              }
+            }
+            if ($fahrt =~ /$station/){
+              push(@pt,$fahrt) unless ($specifier eq 'x');
+              push(@pet,$fahrt) unless ($specifier eq 'x');
+            }
+            $def_planzeit = 0;
+            $def_realzeit = 0;
+            $def_linie = 0;
+            $def_fahrtziel = 0;
+            $def_extra = 0;
+            next;
+          }
+        }
+      }
+    }
+    if ( $index == 1 and $line =~ /References/) {
+      last;
+    }
+  }
+  my $ref_pt = \@pt;
+  my $ref_pet = \@pet;
+  push(@$t,$ref_pt);
+  push(@$et,$ref_pet);
+}
+
 sub remove_blanks {
  my $str = shift;
  $str =~ s/^\s*//;
@@ -1162,6 +1366,82 @@ sub sort_entries {
       push(@$et,$$bet[0]);
       shift(@$bt);
       shift(@$bet);
+    }
+  }
+}
+
+sub sort_entries_n {
+  my $nrtot = @_[0];                                                                               # total number of stations
+  my $mj    = @_[1];                                                                               # maximum connections per station
+  my $pt    = @_[2];                                                                               # twodimensional array containing unsorted connections (terminal output)
+  my $pet   = @_[3];                                                                               # twodimensional array containing unsorted connections (perl-Tk output)
+  my $t     = @_[4];                                                                               # final onedimensional array for sorted connections (terminal output)
+  my $et    = @_[5];                                                                               # final onedimensional array for sorted connections (perl-Tk output)
+  my @testarr;                                                                                     # test array (terminal output)
+  my @testarre;                                                                                    # test array (perl-Tk output)
+  my $date = `date`;                                                                               # print output of date command in variable
+  my @splitdate = split(' ',$date);                                                                # split date into parts
+  my $timefull = $splitdate[3];                                                                    # get variable for time (XX:XX:XX)
+  my @timecomp = split(':',$timefull);                                                             # split time into parts
+  my $time = sprintf("%02u:%02u",$timecomp[0],$timecomp[1]);                                       # write time (XX:XX) into variable
+  my @testarr_s;                                                                                   # sorted test array (terminal output)
+  my @testarre_s;                                                                                  # sorted test array (perl-Tk output)
+  my @ind;                                                                                         # index array
+  # set index array values initially to 0
+  foreach my $nh (0..$nrtot){
+    $ind[$nh] = 0;
+  }
+  # sorting procedure
+  foreach my $nt (0..($nrtot*$mj)) {
+  # write time into test arrays
+#    $testarr[0] = $time;
+#    $testarre[0] = $time;
+  # push the first not already used connection for each station into test array
+    foreach my $nr (0..($nrtot-1)){
+      if (defined $$pt[$nr][(0+$ind[$nr])]){
+        push(@testarr,$$pt[$nr][(0+$ind[$nr])]);
+        push(@testarre,$$pet[$nr][(0+$ind[$nr])]);
+      }else{
+        push(@testarr,undef);
+        push(@testarre,undef);
+      }
+    }
+  # sort arrays (ASCII procedure)
+    @testarr_s = sort {$a cmp $b} @testarr;
+    @testarre_s = sort {$a cmp $b} @testarre;
+    if ($time =~ /^2/ and $testarr_s[0] =~ /^0/){
+      foreach my $zz ($#testarr..0){
+        if($testarr_s[$zz] =~ /^0/){
+          foreach my $zy (1..($#testarr-$zz)){
+            if (defined $testarr[($zz+$zy)]){
+              push(@$t,$testarr_s[($zz+$zy)]);
+              push(@$et,$testarre_s[($zz+$zy)]);
+              last;
+              last;
+            }
+          }
+        }
+      }
+    }else{
+      foreach my $zz (0..$#testarr){
+        if (defined $testarr_s[$zz]){
+          push(@$t,$testarr_s[$zz]);
+          push(@$et,$testarre_s[$zz]);
+          last;
+        }
+      }
+    }
+  # update index array
+    foreach my $nz (0..$#testarr){
+      if($testarr[$nz] eq $$t[$#$t]){
+        $ind[$nz] = $ind[$nz] + 1;
+        last;
+      }
+    }
+  # remove elements from test arrays
+    foreach my $nz (0..$#testarr){
+      shift(@testarr);
+      shift(@testarre);
     }
   }
 }
