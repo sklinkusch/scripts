@@ -1149,9 +1149,6 @@ sub sort_entries {
   }
   # sorting procedure
   foreach my $nt (0..($nrtot*$mj)) {
-  # write time into test arrays
-#    $testarr[0] = $time;
-#    $testarre[0] = $time;
   # push the first not already used connection for each station into test array
     foreach my $nr (0..($nrtot-1)){
       if (defined $$pt[$nr][(0+$ind[$nr])]){
