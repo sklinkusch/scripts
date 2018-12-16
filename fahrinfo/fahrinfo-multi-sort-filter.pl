@@ -35,7 +35,7 @@ my @url;
 my @command;
 foreach my $xh (0..($nrhaltestellen - 1)){
  $haltestellen[$xh] = join('',$ARGV[($xh + 1)]);
- $xnumm[$xh] = join('',$ARGV[($xh + $nrhaltestellen + 2)]);
+ $xnumm[$xh] = join('',$ARGV[($xh + $nrhaltestellen + 3)]);
  @temparr = haltnummer($haltestellen[$xh],$xnumm[$xh]);
  push(@station,$temparr[0]);
  push(@haltestellennr,Fahrinfo::get_number($temparr[1]));
@@ -47,11 +47,11 @@ my $filtre = join('',$ARGV[($nrhaltestellen + 2)]);
 $filtre = 127 if ($filtre < 1 or $filtre > 127);
 my $filter = Fahrinfo::calc_filter($filtre);
 
-my $fls = join('',$ARGV[(2 * $nrhaltestellen + 2)]);
-print_exit() if ($fls ne 'f' or $fls ne 'n');
+my $fls = join('',$ARGV[(2 * $nrhaltestellen + 3)]);
+print_exit() if ($fls ne 'f' and $fls ne 'n');
 my @fli;
-foreach my $xf ((2 * $nrhaltestellen + 3)..$#ARGV){
-  push(@fli,$ARGV[$xf]);
+foreach my $xf ((2 * $nrhaltestellen + 4)..$#ARGV){
+  push(@fli,join('',$ARGV[$xf]));
 }
 
 my $num;
@@ -98,19 +98,17 @@ sub checkNet {
   my ($label, $num) = @_;
   my (@text);
   my (@enctext);
-  my @apretext; my @apreenctext;
-  my @bpretext; my @bpreenctext;
   my @pretext; my @preenctext;
+  my @preftext; my @prefenctext;
   # open a pipe to the acpi command and read the battery value
   # and a few other parameters
-  open (ACPI, "$acommand |") || die "can't open pipe A!";
-  Fahrinfo::read_strict_p(\*ACPI,$astation,\@apretext,\@apreenctext);
-  close ACPI;
-  open (ACPJ, "$bcommand |") || die "can't open pipe B!";
-  Fahrinfo::read_strict_p(\*ACPJ,$bstation,\@bpretext,\@bpreenctext);
-  close ACPJ;
-  Fahrinfo::sort_entries(\@apretext,\@apreenctext,\@bpretext,\@bpreenctext,\@pretext,\@preenctext);
-  Fahrinfo::filter_sgl_p($fls,\@fli,\@pretext,\@preenctext,\@text,\@enctext);
+  foreach my $xh (0..$#haltestellennr) {
+   open(ACPI, "$command[$xh] |") || die "can't open pipe $xh!";
+   Fahrinfo::read_strict_pn(\*ACPI,$xh,$station[$xh],\@pretext,\@preenctext);
+   close ACPI;
+  }
+  Fahrinfo::sort_entries_n($nrhaltestellen,$maxj,\@pretext,\@preenctext,\@preftext,\@prefenctext);
+  Fahrinfo::filter_sgl_p($fls,\@fli,\@preftext,\@prefenctext,\@text,\@enctext);
   Fahrinfo::popmax_sgl(\@text,\@enctext);
   Fahrinfo::add_linebreaks(\@text,\@enctext);
   my $nrtext = $#text;
@@ -122,7 +120,7 @@ sub checkNet {
 }
 
 sub haltnummer {
-  my $halt = shift;
+  my ($halt,$xnumm) = @_;
   open(DATA, "$FindBin::RealBin/../data/fahrinfo-elinks2.dat") || die "can't open 'fahrinfo-elinks2.dat'";
   my $numma = -1;
   my $str;
@@ -159,7 +157,7 @@ sub haltnummer {
 }
 
 sub print_exit {
-  print "Gebrauch: fahrinfo-duo-sort-filter.pl \"Haltestelle1\" \"Haltestelle2\" <dep/arr> <code> <Zeile1> <Zeile2> <filter-spec> <filter-vals>\n";
+  print "Gebrauch: fahrinfo-multi-sort-filter.pl <#Haltestellen> \"Haltestelle1\" ... <dep/arr> <code> <Zeile1> ... <filter-spec> <filter-vals>\n";
   print "dep: Abfahrtsplan, arr: Ankunftsplan\n";
   print "code: Summe von Zahlen: Fernbahn (64), Regionalverkehr (32), S-Bahn (16), U-Bahn (8), Tram (4), Bus (2), Faehre (1)\n";
   print "filter-spec: f: nur Einträge mit <filter-vals> berücksichtigen, n: Einträge mit <filter-vals> nicht berücksichtigen\n";
