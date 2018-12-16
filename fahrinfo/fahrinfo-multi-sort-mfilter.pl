@@ -98,7 +98,7 @@ $mw->resizable(1, 1);
 $mw->bind('<q>', sub {exit});
 $mw->bind('<Escape>', sub {exit;});
 
-my $label= $mw->Label(-font=>"Courier -12 bold",-ijustify=>'left')->pack;
+my $label= $mw->Label(-font=>"Courier -12 bold",-justify=>'left')->pack;
 
 # call the power checker now
 checkNet ($label, $num);
@@ -120,15 +120,13 @@ sub checkNet {
   my (@enctext);
   my @pretext; my @preenctext;
   my @preftext; my @prefenctext;
-  # open a pipe to the acpi command and read the battery value
-  # and a few other parameters
   foreach my $xh (0..$#haltestellennr) {
    open(ACPI, "$command[$xh] |") || die "can't open pipe $xh!";
    Fahrinfo::read_strict_pn(\*ACPI,$xh,$station[$xh],\@pretext,\@preenctext);
    close ACPI;
+   Fahrinfo::filter_sgl_pn($xh,\@fls,\@fli,\@pretext,\@preenctext,\@preftext,\@prefenctext);
   }
-  Fahrinfo::sort_entries($nrhaltestellen,$maxj,\@pretext,\@preenctext,\@preftext,\@prefenctext);
-  Fahrinfo::filter_sgl_p(\@fls,\@fli,\@preftext,\@prefenctext,\@text,\@enctext);
+  Fahrinfo::sort_entries($nrhaltestellen,$maxj,\@preftext,\@prefenctext,\@text,\@enctext);
   Fahrinfo::popmax_sgl(\@text,\@enctext);
   Fahrinfo::add_linebreaks(\@text,\@enctext);
   my $nrtext = $#text;
