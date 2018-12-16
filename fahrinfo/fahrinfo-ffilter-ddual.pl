@@ -166,7 +166,7 @@ sub haltnummer {
 }
 
 sub print_exit {
-  print "Gebrauch: fahrinfo-ffilter-ddual.pl \"Haltestelle\" <typus> <code> <Zeile> <filter-spec-arr> <filter-spec-dep> <filter-vals-arr> / <filter-vals-dep> \n";
+  print "Gebrauch: fahrinfo-ffilter-ddual.pl \"Haltestelle\" <typus> <code> <Zeile> <filter-spec-1> <filter-spec-2> <filter-vals-1> / <filter-vals-2> \n";
   print "typus: dep: Abfahrtplan, arr: Ankunftplan\n";
   print "code: Summe von Zahlen: Fernbahn (64), Regionalverkehr (32), S-Bahn (16), U-Bahn (8), Tram (4), Bus (2), Faehre (1)\n";
   print "filter-spec: f: nur Einträge mit <filter-vals> berücksichtigen, n: Einträge mit <filter-vals> nicht berücksichtigen\n";
