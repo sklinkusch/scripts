@@ -351,6 +351,7 @@ sub filter_sgl_p {
   my $ft  = $_[4];
   my $fet = $_[5];
   my $and = 0;
+  my $dumstring;
   my @open;
   my @close;
   my @ort = @$ot;
@@ -377,7 +378,8 @@ sub filter_sgl_p {
     if ($fls eq 'f'){
       foreach my $xz (0..$#$ot){
         foreach my $xy (0..$#open){
-          if ($$ot[$xz] =~ /$$fl[$open[$xy]]/ and $$ot[$xz] =~ /$$fl[$close[$xy]]/){
+          $dumstring = substr($$ot[$xz],21,64);
+          if ($dumstring =~ /$$fl[$open[$xy]]/ and $dumstring =~ /$$fl[$close[$xy]]/){
             push(@prt,$$ot[$xz]);
             push(@pret,$$oet[$xz]);
             last;
@@ -387,7 +389,8 @@ sub filter_sgl_p {
     }else{
       foreach my $xz (0..$#$ot){
         foreach my $xy (0..$#open){
-          if ($$ot[$xz] =~ /$$fl[$open[$xy]]/ and $$ot[$xz] =~ /$$fl[$close[$xy]]/){
+          $dumstring = substr($$ot[$xz],21,64);
+          if ($dumstring =~ /$$fl[$open[$xy]]/ and $dumstring =~ /$$fl[$close[$xy]]/){
             $$ot[$xz]  = undef;
             $$oet[$xz] = undef;
             last;
@@ -402,9 +405,10 @@ sub filter_sgl_p {
   }
   if ($fls eq 'f'){
     foreach my $xz (0..$#$ot) {
+      $dumstring = substr($$ot[$xz],21,64);
       foreach my $xy (0..$#$fl) {
         if (defined $$fl[$xy]){
-          if ($$ot[$xz] =~ /$$fl[$xy]/){
+          if ($dumstring =~ /$$fl[$xy]/){
             push(@prt,$$ot[$xz]);
             push(@pret,$$oet[$xz]);
             last;
@@ -414,9 +418,10 @@ sub filter_sgl_p {
     }
   }else{
     foreach my $xz (0..$#$ot) {
+      $dumstring = substr($$ot[$xz],21,64);
       foreach my $xy (0..$#$fl) {
         if (defined $$fl[$xy]){
-          if ($$ot[$xz] =~ /$$fl[$xy]/){
+          if ($dumstring =~ /$$fl[$xy]/){
             $$ot[$xz]  = undef;
             $$oet[$xy] = undef;
             last;
