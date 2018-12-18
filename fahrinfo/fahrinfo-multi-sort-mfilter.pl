@@ -57,21 +57,18 @@ my @xfli;
 my $ref_xfli;
 my $temparg;
 my $nrslash = 0;
-foreach my $xf ((2 * $nrhaltestellen + 4)..$#ARGV){
+my @slash;
+my @tmparr;
+push (@slash,-1);
+foreach my $xf ((3 * $nrhaltestellen + 3)..$#ARGV){
   $temparg = join('',$ARGV[$xf]);
-  if ($temparg ne '/'){
-    push(@xfli, join('',$temparg));
-  }else{
-    $nrslash++;
-    $ref_xfli = \@xfli;
-    push(@fli,$ref_xfli);
-    @xfli = undef;
-    $ref_xfli = undef;
-    $temparg = undef;
-  }
+  push(@tmparr,$temparg);
 }
-$ref_xfli = \@xfli;
-push(@xfli,$ref_xfli);
+foreach my $xj (0..$#tmparr){
+    push (@fli,$tmparr[$xj]);
+    push (@slash,$xj) if ($tmparr[$xj] eq '/');
+    $nrslash++ if ($tmparr[$xj] eq '/');
+}
 print_exit() unless ($nrslash == $#haltestellen);
 
 my $num;
@@ -120,13 +117,20 @@ sub checkNet {
   my (@enctext);
   my @pretext; my @preenctext;
   my @preftext; my @prefenctext;
+  my $xn = 0;
+  my @fxs;
+  my @prenr;
   foreach my $xh (0..$#haltestellennr) {
    open(ACPI, "$command[$xh] |") || die "can't open pipe $xh!";
-   Fahrinfo::read_strict_pn(\*ACPI,$xh,$station[$xh],\@pretext,\@preenctext);
+   Fahrinfo::read_strict_pn(\*ACPI,$xh,$station[$xh],\@prenr,\@pretext,\@preenctext);
    close ACPI;
-   Fahrinfo::filter_sgl_pn($xh,\@fls,\@fli,\@pretext,\@preenctext,\@preftext,\@prefenctext);
+   #Fahrinfo::filter_sgl_pn($xh,\@fls,\@fli,\@slash,\@prenr,\@pretext,\@preenctext,\@preftext,\@prefenctext,\@fxs);
   }
-  Fahrinfo::sort_entries($nrhaltestellen,$maxj,\@preftext,\@prefenctext,\@text,\@enctext);
+  foreach my $xj (0..$#pretext){
+      print "$xj: $pretext[$xj]\n";
+  }
+  exit;
+  Fahrinfo::sort_entries_n($nrhaltestellen,$maxj,\@fxs,\@preftext,\@prefenctext,\@text,\@enctext);
   Fahrinfo::popmax_sgl(\@text,\@enctext);
   Fahrinfo::add_linebreaks(\@text,\@enctext);
   my $nrtext = $#text;

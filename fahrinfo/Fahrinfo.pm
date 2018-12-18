@@ -447,6 +447,127 @@ sub filter_sgl_p {
   }
 }
 
+sub filter_sgl_pn {
+  my $xh  = $_[0];
+  my $fls = $_[1];
+  my $fl  = $_[2];
+  my $sl  = $_[3];
+  my $pnr = @_[4];
+  my $ot  = $_[5];
+  my $oet = $_[6];
+  my $ft  = $_[7];
+  my $fet = $_[8];
+  my $fxs = $_[9];
+  my $and = 0;
+  my $dumstring;
+  my @open;
+  my @close;
+  my @ort = @$ot;
+  my @oret = @$oet;
+  my @opt;
+  my @opet;
+  my @prt;
+  my @pret;
+  my @fft;
+  my @ffet;
+  my $spec = $$fls[$xh];
+  my @filt;
+  my $dd = $$sl[$xh] + 1;
+  my $de;
+  if (defined $$sl[($xh+1)]){
+    $de = $$sl[($xh+1)] - 1;
+  }else{
+    $de = $#$fl;
+  }
+  foreach my $xde ($dd..$de){
+    push(@filt,$$fl[$xde]);
+  }
+  foreach my $dda (0..$$pnr[$xh]){
+      push(@opt,$$ot[$xh][$dda]);
+      print "$xh, $dda: $$ot[$xh][$dda]\n";
+      push(@opet,$$oet[$xh][$dda]);
+  }
+  $and = 1 if (join(' ',@filt) =~ /[\{\}]/);
+  if ($and == 1){
+    foreach my $xz (0..$#filt){
+      if ($filt[$xz] =~ /^\{.+$/){
+        push(@open,$xz);
+        $filt[$xz] = substr($filt[$xz],1);
+      }
+      if ($filt[$xz] =~ /^.+\}$/){
+        push(@close,$xz);
+        $/ = "\}";
+        chomp($filt[$xz]);
+      }
+    }
+    main::print_exit() if(($#open - $#close) != 0);
+    foreach my $xz (0..$#open){
+      main::print_exit() if(($close[$xz] - $open[$xz]) != 1);
+    }
+    if ($spec eq 'f'){
+      foreach my $xz (0..$#opt){
+        foreach my $xy (0..$#open){
+          $dumstring = substr($opt[$xz],21,64);
+          if ($dumstring =~ /$filt[$open[$xy]]/ and $dumstring =~ /$filt[$close[$xy]]/){
+            push(@$ft,$opt[$xz]);
+            push(@$fet,$opet[$xz]);
+            last;
+          }
+        }
+      }
+    }else{
+      foreach my $xz (0..$#opt){
+        foreach my $xy (0..$#open){
+          $dumstring = substr($opt[$xz],21,64);
+          if ($dumstring =~ /$filt[$open[$xy]]/ and $dumstring =~ /$filt[$close[$xy]]/){
+            $opt[$xz]  = undef;
+            $opet[$xz] = undef;
+            last;
+          }
+        }
+      }
+    }
+    foreach my $xy (0..$#open){
+      $filt[$open[$xy]]   = undef;
+      $filt[$close[$xy]]  = undef;
+    }
+  }
+  if ($spec eq 'f'){
+    foreach my $xz (0..$#opt) {
+      $dumstring = substr($opt[$xz],21,64);
+      foreach my $xy (0..$#filt) {
+        if (defined $filt[$xy]){
+          if ($dumstring =~ /$filt[$xy]/){
+            push(@$ft,$opt[$xz]);
+            push(@$fet,$opet[$xz]);
+            last;
+          }
+        }
+      }
+    }
+  }else{
+    foreach my $xz (0..$#opt) {
+      $dumstring = substr($opt[$xz],21,64);
+      foreach my $xy (0..$#filt) {
+        if (defined $filt[$xy]){
+          if ($dumstring =~ /$filt[$xy]/){
+            $opt[$xz]  = undef;
+            $opet[$xy] = undef;
+            last;
+          }
+        }
+      }
+    }
+    foreach my $xy (0..$#opt) {
+      if (defined $opt[$xy]) {
+        push(@$ft,$opt[$xy]);
+        push(@$fet,$opet[$xy]);
+      }
+    }
+  }
+  push(@$fxs,$#$ft);
+}
+
 sub get_number {
  my $str = shift;
  $str =~ /([0-9]{1})([0-9]{6})/;
@@ -920,8 +1041,9 @@ sub read_strict_pn {
   my $fs = $_[0];
   my $first = $_[1];
   my $station = $_[2];
-  my $t = $_[3];
-  my $et = $_[4];
+  my $pnr = $_[3];
+  my $t = $_[4];
+  my $et = $_[5];
   my @pt;
   my @pet;
   my $index = 0;
@@ -1114,10 +1236,9 @@ sub read_strict_pn {
       last;
     }
   }
-  my $ref_pt = \@pt;
-  my $ref_pet = \@pet;
-  push(@$t,$ref_pt);
-  push(@$et,$ref_pet);
+  push(@$t,@pt);
+  push(@$et,@pet);
+  push(@$pnr,$#$t);
 }
 
 sub remove_blanks {
@@ -1198,6 +1319,10 @@ sub sort_entries {
       shift(@testarr);
       shift(@testarre);
     }
+  }
+  print "T: \n";
+  foreach my $xxz (0..$#$t){
+    print "$$t[$xxz]\n";
   }
 }
 
