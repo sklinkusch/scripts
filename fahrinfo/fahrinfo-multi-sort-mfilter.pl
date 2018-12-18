@@ -128,7 +128,7 @@ sub checkNet {
   foreach my $xh (0..$#haltestellennr) {
     Fahrinfo::filter_sgl_pn($xh,\@fls,\@fli,\@slash,\@prenr,\@pretext,\@preenctext,\@preftext,\@prefenctext,\@fxs);
   }
-  Fahrinfo::sort_entries_n($nrhaltestellen,$maxj,\@fxs,\@preftext,\@prefenctext,\@text,\@enctext);
+  Fahrinfo::sort_entries_n($#haltestellennr,\@fxs,\@preftext,\@prefenctext,\@text,\@enctext);
   Fahrinfo::popmax_sgl(\@text,\@enctext);
   Fahrinfo::add_linebreaks(\@text,\@enctext);
   my $nrtext = $#text;

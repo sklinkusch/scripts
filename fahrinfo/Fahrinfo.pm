@@ -1326,6 +1326,82 @@ sub sort_entries {
   }
 }
 
+sub sort_entries_n {
+  my $maxh  = @_[0];                                                                               # highest station number
+  my $fxs   = @_[1];                                                                               # array containing the endpoints of each station
+  my $pt    = @_[2];                                                                               # twodimensional array containing unsorted connections (terminal output)
+  my $pet   = @_[3];                                                                               # twodimensional array containing unsorted connections (perl-Tk output)
+  my $t     = @_[4];                                                                               # final onedimensional array for sorted connections (terminal output)
+  my $et    = @_[5];                                                                               # final onedimensional array for sorted connections (perl-Tk output)
+  my @testarr;                                                                                     # test array (terminal output)
+  my @testarre;                                                                                    # test array (perl-Tk output)
+  my $date = `date`;                                                                               # print output of date command in variable
+  my @splitdate = split(' ',$date);                                                                # split date into parts
+  my $timefull = $splitdate[3];                                                                    # get variable for time (XX:XX:XX)
+  my @timecomp = split(':',$timefull);                                                             # split time into parts
+  my $time = sprintf("%02u:%02u",$timecomp[0],$timecomp[1]);                                       # write time (XX:XX) into variable
+  my @testarr_s;                                                                                   # sorted test array (terminal output)
+  my @testarre_s;                                                                                  # sorted test array (perl-Tk output)
+  my @ind;                                                                                         # index array
+  # set index array values initially to 0
+  foreach my $nh (0..$maxh){
+    $ind[$nh] = 0 if ($nh == 0);
+    $ind[$nh] = ($$fxs[($nh-1)]+1) if ($nh > 0);
+  }
+  # sorting procedure
+  foreach my $nt (0..$#$pt) {
+  # push the first not already used connection for each station into test array
+    foreach my $nr (0..$maxh){
+      if (defined $$pt[$ind[$nr]]){
+        push(@testarr,$$pt[$ind[$nr]]);
+        push(@testarre,$$pet[$ind[$nr]]);
+      }else{
+        push(@testarr,undef);
+        push(@testarre,undef);
+      }
+    }
+  # sort arrays (ASCII procedure)
+    @testarr_s = sort {$a cmp $b} @testarr;
+    @testarre_s = sort {$a cmp $b} @testarre;
+    if ($time =~ /^2/ and $testarr_s[0] =~ /^0/ and $testarr_s[$#testarr_s] !~ /^0/){
+      my $zz = $#testarr;
+      while ($zz >= 0) {
+        if($testarr_s[$zz] =~ /^0/){
+          foreach my $zy (1..($#testarr-$zz)){
+            if (defined $testarr[($zz+$zy)]){
+              push(@$t,$testarr_s[($zz+$zy)]);
+              push(@$et,$testarre_s[($zz+$zy)]);
+              last;
+            }
+          }
+          last;
+        }
+        $zz--;
+      }
+    }else{
+      foreach my $zz (0..$#testarr){
+        if (defined $testarr_s[$zz]){
+          push(@$t,$testarr_s[$zz]);
+          push(@$et,$testarre_s[$zz]);
+          last;
+        }
+      }
+    }
+  # update index array
+    foreach my $nz (0..$#testarr){
+      if($testarr[$nz] eq $$t[$#$t]){
+        $ind[$nz] = $ind[$nz] + 1;
+        last;
+      }
+    }
+  # remove elements from test arrays
+    foreach my $nz (0..$#testarr){
+      shift(@testarr);
+      shift(@testarre);
+    }
+  }
+}
+
 sub subst_text {
       my $lina = shift;
       $lina =~ s/\[[1-9][0-9]\]/    /g;
