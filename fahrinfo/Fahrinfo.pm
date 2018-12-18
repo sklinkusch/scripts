@@ -472,20 +472,22 @@ sub filter_sgl_pn {
   my @ffet;
   my $spec = $$fls[$xh];
   my @filt;
-  my $dd = $$sl[$xh] + 1;
-  my $de;
-  if (defined $$sl[($xh+1)]){
-    $de = $$sl[($xh+1)] - 1;
-  }else{
-    $de = $#$fl;
+  my $obegin;
+  my $oend;
+  $obegin = $$pnr[($xh-1)]+1 if ($xh > 0);
+  $obegin = 0 if ($xh == 0);
+  $oend = $$pnr[$xh];
+  foreach my $dda ($obegin..$oend){
+      push(@opt,$$ot[$dda]);
+      push(@opet,$$oet[$dda]);
   }
-  foreach my $xde ($dd..$de){
-    push(@filt,$$fl[$xde]);
-  }
-  foreach my $dda (0..$$pnr[$xh]){
-      push(@opt,$$ot[$xh][$dda]);
-      print "$xh, $dda: $$ot[$xh][$dda]\n";
-      push(@opet,$$oet[$xh][$dda]);
+  my $fbegin;
+  my $fend;
+  $fbegin = $$sl[($xh-1)]+1 if ($xh > 0);
+  $fbegin = 0 if ($xh == 0);
+  $fend = $$sl[$xh];
+  foreach my $ddf ($fbegin..$fend){
+    push(@filt,$$fl[$ddf]);
   }
   $and = 1 if (join(' ',@filt) =~ /[\{\}]/);
   if ($and == 1){
@@ -558,11 +560,9 @@ sub filter_sgl_pn {
         }
       }
     }
-    foreach my $xy (0..$#opt) {
-      if (defined $opt[$xy]) {
-        push(@$ft,$opt[$xy]);
-        push(@$fet,$opet[$xy]);
-      }
+    foreach my $xy ($obegin..$oend) {
+      push(@$ft,$opt[$xy]);
+      push(@$fet,$opet[$xy]);
     }
   }
   push(@$fxs,$#$ft);
