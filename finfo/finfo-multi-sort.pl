@@ -79,7 +79,7 @@ sub checkNet {
   }
   Fahrinfo::st_entr_n($#haltestellennr,\@prenr,\@pretext,\@text);
   Fahrinfo::pmax_sgl(\@text);
-  Fahrinfo::add_linebreaks(\@text,\@enctext);
+  Fahrinfo::add_lbr(\@text);
   my $nrtext = $#text;
   if($nrtext > -1){
     print "@text" if ($debug);
