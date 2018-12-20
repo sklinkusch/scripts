@@ -8,7 +8,6 @@
 # Written by SK
 #
 
-use Tk;
 use strict;
 use warnings;
 use utf8;
@@ -17,7 +16,7 @@ use open ':encoding(utf8)';
 use open ':std';
 use FindBin;
 use lib $FindBin::RealBin;
-use Fahrinfo;
+use Fahrinfo_ubuntu;
 
 ### set variables
 print_exit() unless ($#ARGV >= 0);
