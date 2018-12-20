@@ -47,36 +47,15 @@ $filtre = 127 if ($filtre < 1 or $filtre > 127);
 my $filter = Fahrinfo::calc_filter($filtre);
 
 my $num;
-my $debug = 0;
-
-my $del;                                        # delay time (seconds)
-$del = Fahrinfo::read_params(\$del);            # read parameter from external file
-my $DELAY=$del*1000;                            # delay time (milliseconds)
 
 foreach my $xh (0..$#haltestellennr) {
  $url[$xh] = "http://fahrinfo.vbb.de/bin/stboard.exe/dn?input=$haltestellennr[$xh]&boardType=$typus&maxJourneys=$maxj&selectDate=today&productsFilter=$filter&start=yes&pageViewMode=PRINT&dirINPUT=&";
  $command[$xh] = "elinks -dump -dump-width 200 \"$url[$xh]\" | sed \'s/ä/ae/g;s/ö/oe/g;s/ü/ue/g;s/Ä/Ae/g;s/Ö/Oe/g;s/Ü/Ue/g;s/ß/ss/g;s/é/e/g;s/è/e/g;s/ê/e/g;s/à/a/g;s/á/a/g;s/â/a/g\'";
 }
 
-my $rheight=10;
-my $rwidth=5;
-
-# create main window
-my $mw = MainWindow->new();
-$mw->geometry('1000x550');
-$mw->resizable(1, 1);
-
-# set up quit key bindings
-$mw->bind('<q>', sub {exit});
-$mw->bind('<Escape>', sub {exit;});
-
-my $label= $mw->Label(-font=>"Courier -12 bold",-justify=>'left')->pack;
 
 # call the power checker now
 checkNet ($label, $num);
-$mw->repeat($DELAY, \&checkNet, $label, $num);
-
-MainLoop;
 
 ############
 # end main #
