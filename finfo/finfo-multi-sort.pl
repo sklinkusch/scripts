@@ -78,7 +78,7 @@ sub checkNet {
    close ACPI;
   }
   Fahrinfo::st_entr_n($#haltestellennr,\@prenr,\@pretext,\@text);
-  Fahrinfo::popmax_sgl(\@text,\@enctext);
+  Fahrinfo::pmax_sgl(\@text);
   Fahrinfo::add_linebreaks(\@text,\@enctext);
   my $nrtext = $#text;
   if($nrtext > -1){
