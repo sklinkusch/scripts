@@ -66,18 +66,15 @@ checkNet ($num);
 # call the update subroutine
 #
 sub checkNet {
-  my ($label, $num) = @_;
+  my ($num) = @_;
   my (@text);
-  my (@enctext);
-  my @pretext; my @preenctext;
-  my @apretext; my @apreenctext;
-  my @bpretext; my @bpreenctext;
+  my @pretext; 
   my @prenr;
   # open a pipe to the acpi command and read the battery value
   # and a few other parameters
   foreach my $xh (0..$#haltestellennr) {
    open(ACPI, "$command[$xh] |") || die "can't open pipe $xh!";
-   Fahrinfo::read_strict_pn(\*ACPI,$xh,$station[$xh],\@prenr,\@pretext,\@preenctext);
+   Fahrinfo::read_str_pn(\*ACPI,$xh,$station[$xh],\@prenr,\@pretext);
    close ACPI;
   }
   Fahrinfo::sort_entries_n($#haltestellennr,\@prenr,\@pretext,\@preenctext,\@text,\@enctext);
