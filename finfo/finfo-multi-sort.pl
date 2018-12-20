@@ -77,7 +77,7 @@ sub checkNet {
    Fahrinfo::read_str_pn(\*ACPI,$xh,$station[$xh],\@prenr,\@pretext);
    close ACPI;
   }
-  Fahrinfo::sort_entries_n($#haltestellennr,\@prenr,\@pretext,\@preenctext,\@text,\@enctext);
+  Fahrinfo::st_entr_n($#haltestellennr,\@prenr,\@pretext,\@text);
   Fahrinfo::popmax_sgl(\@text,\@enctext);
   Fahrinfo::add_linebreaks(\@text,\@enctext);
   my $nrtext = $#text;
