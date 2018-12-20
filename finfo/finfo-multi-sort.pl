@@ -82,9 +82,7 @@ sub checkNet {
   Fahrinfo::add_lbr(\@text);
   my $nrtext = $#text;
   if($nrtext > -1){
-    print "@text" if ($debug);
-  # set the labels and battery indicator
-    $label->configure(-text=>"@enctext");
+    print "@text";
   }
 }
 
