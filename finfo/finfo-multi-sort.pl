@@ -55,7 +55,7 @@ foreach my $xh (0..$#haltestellennr) {
 
 
 # call the power checker now
-checkNet ($label, $num);
+checkNet ($num);
 
 ############
 # end main #
