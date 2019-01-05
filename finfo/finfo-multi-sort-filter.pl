@@ -75,9 +75,9 @@ checkNet ($num);
 sub checkNet {
   my ($num) = @_;
   my (@text);
-  my @apretext; 
-  my @bpretext; 
-  my @pretext;
+  my @pretext; 
+  my @preftext; 
+  my @prenr;
   # open a pipe to the acpi command and read the battery value
   # and a few other parameters
   open (ACPI, "$acommand |") || die "can't open pipe A!";
