@@ -85,7 +85,7 @@ sub checkNet {
    Fahrinfo_ubuntu::read_str_pn(\*ACPI,$xh,$station[$xh],\@prenr,\@pretext);
    close ACPI;
   }
-  Fahrinfo_ubuntu::st_entr(\@apretext,\@bpretext,\@pretext);
+  Fahrinfo_ubuntu::st_entr_n($#haltestellennr,\@prenr,\@pretext,\@preftext);
   Fahrinfo_ubuntu::ft_sgl_p($fls,\@fli,\@pretext,\@text);
   Fahrinfo_ubuntu::pmax_sgl(\@text);
   Fahrinfo_ubuntu::add_lbr(\@text);
