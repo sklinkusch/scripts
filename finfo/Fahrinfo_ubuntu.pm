@@ -1070,7 +1070,7 @@ sub read_str_pn {
       next;
     }
     if ( $index == 1 and $line !~ /References/) {
-      my $curline = Fahrinfo::subst_text($line);
+      my $curline = Fahrinfo_ubuntu::subst_text($line);
       if ($curline =~ /In Richtung/ or $curline =~ /Aus Richtung/) {
         next;
       }
@@ -1090,11 +1090,11 @@ sub read_str_pn {
             $def_realzeit = 1;
             $linie = $5;
             $def_linie = 1;
-            $product = Fahrinfo::define_product($linie,$fahrtziel);
+            $product = Fahrinfo_ubuntu::define_product($linie,$fahrtziel);
             $extra_stop = $6;
             $def_extra = 1;
-            $difftime = Fahrinfo::calculate_differenz($planzeit, $realzeit);
-            $specifier = Fahrinfo::define_specifier($difftime, $product,$currtime);
+            $difftime = Fahrinfo_ubuntu::calculate_differenz($planzeit, $realzeit);
+            $specifier = Fahrinfo_ubuntu::define_specifier($difftime, $product,$currtime);
           }elsif ($curline =~ /^[ ]{1,5}[012][0-9]\:[012345][0-9] [012][0-9]\:[012345][0-9]/ and $def_planzeit == 0 and $def_realzeit == 0 and $def_linie == 0){
             $curline =~ /([ ]{1,5})([012][0-9]\:[012345][0-9])[ ]{1}([012][0-9]\:[012345][0-9])([ ]{1,})([A-Z]{0,3}[ ]?[0-9]{0,5})[ ]*[012][0-9]\:[012345][0-9]/;
             $planzeit = $2;
@@ -1103,9 +1103,9 @@ sub read_str_pn {
             $def_realzeit = 1;
             $linie = $5;
             $def_linie = 1;
-            $product = Fahrinfo::define_product($linie,$fahrtziel);
-            $difftime = Fahrinfo::calculate_differenz($planzeit, $realzeit);
-            $specifier = Fahrinfo::define_specifier($difftime, $product,$currtime);
+            $product = Fahrinfo_ubuntu::define_product($linie,$fahrtziel);
+            $difftime = Fahrinfo_ubuntu::calculate_differenz($planzeit, $realzeit);
+            $specifier = Fahrinfo_ubuntu::define_specifier($difftime, $product,$currtime);
           }elsif ($curline =~ /^[ ]{1,5}([012][0-9]\:[012345][0-9])[ ]{1}([A-Z]{0,3}[ ]?[0-9]{0,5})[ ]{1,}[012][0-9]\:[012345][0-9][ ]*[A-Za-z0-9\,\.\-\/\+\(\)\[\] ]*Haltestelle\/Gleis ([A-Za-z0-9\,\.\-\+\/\(\)\[\] ]*)/ and $def_planzeit == 0 and $def_realzeit == 0 and $def_linie == 0){
             $curline =~ /^[ ]{1,5}([012][0-9]\:[012345][0-9])[ ]{1}([A-Z]{0,3}[ ]?[0-9]{0,5})[ ]{1,}[012][0-9]\:[012345][0-9][ ]*[A-Za-z0-9\,\.\-\/\+\(\)\[\] ]*Haltestelle\/Gleis ([A-Za-z0-9\,\.\-\+\/\(\)\[\] ]*)/;
             $planzeit = $1;
@@ -1114,7 +1114,7 @@ sub read_str_pn {
             $def_realzeit = 1;
             $linie = $2;
             $def_linie = 1;
-            $product = Fahrinfo::define_product($linie,$fahrtziel);
+            $product = Fahrinfo_ubuntu::define_product($linie,$fahrtziel);
             $difftime = undef;
             $specifier = '?';
             $extra_stop = $3;
@@ -1129,7 +1129,7 @@ sub read_str_pn {
             $def_linie = 1;
             $specifier = 'X';
             $difftime = undef;
-            my $resttime = Fahrinfo::calculate_differenz($planzeit, $currtime);
+            my $resttime = Fahrinfo_ubuntu::calculate_differenz($planzeit, $currtime);
 #            if ($resttime >= 30){
 #              $def_planzeit = 0;
 #              $def_realzeit = 0;
@@ -1145,7 +1145,7 @@ sub read_str_pn {
             if (defined $6 and length($6) > 0){
               $linie = $6;
               $def_linie = 1;
-              $product = Fahrinfo::define_product($linie,$fahrtziel);
+              $product = Fahrinfo_ubuntu::define_product($linie,$fahrtziel);
             }
             next;
           }elsif ($skip_request == 1 and $def_planzeit == 1 and $def_realzeit == 0){
@@ -1168,7 +1168,7 @@ sub read_str_pn {
             $def_realzeit = 1;
             $linie = $4;
             $def_linie = 1;
-            $product = Fahrinfo::define_product($linie,$fahrtziel);
+            $product = Fahrinfo_ubuntu::define_product($linie,$fahrtziel);
             $specifier = '?';
             $difftime = undef;
             $curline =~ /Haltestelle\/Gleis ([A-Za-z0-9\+\-\.\,\/\(\)\[\] ]*)/;
@@ -1182,7 +1182,7 @@ sub read_str_pn {
             $def_realzeit = 1;
             $linie = $4;
             $def_linie = 1;
-            $product = Fahrinfo::define_product($linie,$fahrtziel);
+            $product = Fahrinfo_ubuntu::define_product($linie,$fahrtziel);
             $specifier = '?';
             $difftime = undef;
           }
@@ -1190,18 +1190,18 @@ sub read_str_pn {
             my $fahrt;
             if ($def_extra == 1 and defined $extra_stop){
               if (defined $difftime){
-                my $fziel = Fahrinfo::remove_blanks($fahrtziel);
+                my $fziel = Fahrinfo_ubuntu::remove_blanks($fahrtziel);
                 $fahrt = sprintf("%-5s %-5s %-1s %+4d %-1s %-9s %-55s %-55s",$planzeit,$realzeit,$specifier,$difftime,$product,$linie,$fziel,$extra_stop) unless ($specifier eq 'x');
               }else{
-                my $fziel = Fahrinfo::remove_blanks($fahrtziel);
+                my $fziel = Fahrinfo_ubuntu::remove_blanks($fahrtziel);
                 $fahrt = sprintf("%-5s %-5s %-1s %-4s %-1s %-9s %-55s %-55s",$planzeit,$realzeit,$specifier,$spaced,$product,$linie,$fziel,$extra_stop) unless ($specifier eq 'x');
               }
             }else{
               if (defined $difftime){
-                my $fziel = Fahrinfo::remove_blanks($fahrtziel);
+                my $fziel = Fahrinfo_ubuntu::remove_blanks($fahrtziel);
                 $fahrt = sprintf("%-5s %-5s %-1s %+4d %-1s %-9s %-55s %-55s",$planzeit,$realzeit,$specifier,$difftime,$product,$linie,$fziel,$station) unless ($specifier eq 'x');
               }else{
-                my $fziel = Fahrinfo::remove_blanks($fahrtziel);
+                my $fziel = Fahrinfo_ubuntu::remove_blanks($fahrtziel);
                 $fahrt = sprintf("%-5s %-5s %-1s %-4s %-1s %-9s %-55s %-55s",$planzeit,$realzeit,$specifier,$spaced,$product,$linie,$fziel,$station) unless ($specifier eq 'x');
               }
             }

@@ -37,7 +37,7 @@ foreach my $xh (0..($nrhaltestellen - 1)){
  $xnumm[$xh] = join('',$ARGV[($xh + $nrhaltestellen + 3)]);
  @temparr = haltnummer($haltestellen[$xh],$xnumm[$xh]);
  push(@station,$temparr[0]);
- push(@haltestellennr,Fahrinfo::get_number($temparr[1]));
+ push(@haltestellennr,Fahrinfo_ubuntu::get_number($temparr[1]));
 }
 
 my $typus = join('',$ARGV[($nrhaltestellen + 1)]);
@@ -45,7 +45,7 @@ print_exit() if ($typus ne 'dep' and $typus ne 'arr');
 
 my $filtre = join('',$ARGV[($nrhaltestellen + 2)]);
 $filtre = 127 if ($filtre < 1 or $filtre > 127);
-my $filter = Fahrinfo::calc_filter($filtre);
+my $filter = Fahrinfo_ubuntu::calc_filter($filtre);
 
 my $fls = join('',$ARGV[(2 * $nrhaltestellen + 3)]);
 print_exit() if ($fls ne 'f' and $fls ne 'n');
@@ -131,8 +131,9 @@ sub haltnummer {
 }
 
 sub print_exit {
-  print "Gebrauch: finfo-duo-sort.pl \"Haltestelle1\" \"Haltestelle2\" <dep/arr> <code> <Zeile1> <Zeile2>\n";
+  print "Gebrauch: finfo-multi-sort-filter.pl <#Haltestellen> \"Haltestelle1\" ... <dep/arr> <code> <Zeile1> ... <filter-spec> <filter-vals>\n";
   print "dep: Abfahrtsplan, arr: Ankunftsplan\n";
   print "code: Summe von Zahlen: Fernbahn (64), Regionalverkehr (32), S-Bahn (16), U-Bahn (8), Tram (4), Bus (2), Faehre (1)\n";
+  print "filter-spec: f: nur Einträge mit <filter-vals> berücksichtigen, n: Einträge mit <filter-vals> nicht berücksichtigen\n";
   exit;
 }
