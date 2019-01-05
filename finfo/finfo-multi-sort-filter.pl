@@ -96,7 +96,7 @@ sub checkNet {
 }
 
 sub haltnummer {
-  my $halt = shift;
+  my ($halt,$xnumm) = @_;
   open(DATA, "$FindBin::RealBin/../data/fahrinfo-elinks2.dat") || die "can't open 'fahrinfo-elinks2.dat'";
   my $numma = -1;
   my $str;
