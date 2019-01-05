@@ -86,7 +86,7 @@ sub checkNet {
    close ACPI;
   }
   Fahrinfo_ubuntu::st_entr_n($#haltestellennr,\@prenr,\@pretext,\@preftext);
-  Fahrinfo_ubuntu::ft_sgl_p($fls,\@fli,\@pretext,\@text);
+  Fahrinfo_ubuntu::ft_sgl_p($fls,\@fli,\@preftext,\@text);
   Fahrinfo_ubuntu::pmax_sgl(\@text);
   Fahrinfo_ubuntu::add_lbr(\@text);
   my $nrtext = $#text;
