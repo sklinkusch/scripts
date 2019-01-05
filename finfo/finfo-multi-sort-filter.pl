@@ -19,43 +19,47 @@ use lib $FindBin::RealBin;
 use Fahrinfo_ubuntu;
 
 ### set variables
-print_exit() unless ($#ARGV >= 7);
+print_exit() unless ($#ARGV >= 0);
 
-my $ahaltestelle = join('',$ARGV[0]);
-my $bhaltestelle = join('',$ARGV[1]);
-my $axnumm = join('',$ARGV[4]);
-my $bxnumm = join('',$ARGV[5]);
-my $xnumm = $axnumm;
-my @ahaltestellenarr = haltnummer($ahaltestelle);
-$xnumm = $bxnumm;
-my @bhaltestellenarr = haltnummer($bhaltestelle);
-my $ahaltestellenum = $ahaltestellenarr[1];
-my $bhaltestellenum = $bhaltestellenarr[1];
-my $ahaltestellenr = Fahrinfo_ubuntu::get_number($ahaltestellenum);
-my $bhaltestellenr = Fahrinfo_ubuntu::get_number($bhaltestellenum);
-my $astation = $ahaltestellenarr[0];
-my $bstation = $bhaltestellenarr[0];
+my $nrhaltestellen = join('',$ARGV[0]);
+my $nroarg = 2 * $nrhaltestellen + 4;
+print_exit() unless ($#ARGV >= $nroarg);
+my @haltestellen;
+my @xnumm;
+my $maxj = 500;
+my @haltestellennr;
+my @station;
+my @temparr;
+my @url;
+my @command;
+foreach my $xh (0..($nrhaltestellen - 1)){
+ $haltestellen[$xh] = join('',$ARGV[($xh + 1)]);
+ $xnumm[$xh] = join('',$ARGV[($xh + $nrhaltestellen + 3)]);
+ @temparr = haltnummer($haltestellen[$xh],$xnumm[$xh]);
+ push(@station,$temparr[0]);
+ push(@haltestellennr,Fahrinfo::get_number($temparr[1]));
+}
 
-my $typus = join('',$ARGV[2]);
+my $typus = join('',$ARGV[($nrhaltestellen + 1)]);
 print_exit() if ($typus ne 'dep' and $typus ne 'arr');
 
-my $filtre = join('',$ARGV[3]);
+my $filtre = join('',$ARGV[($nrhaltestellen + 2)]);
 $filtre = 127 if ($filtre < 1 or $filtre > 127);
-my $filter = Fahrinfo_ubuntu::calc_filter($filtre);
+my $filter = Fahrinfo::calc_filter($filtre);
 
-my $fls = join('',$ARGV[6]);
+my $fls = join('',$ARGV[(2 * $nrhaltestellen + 3)]);
 print_exit() if ($fls ne 'f' and $fls ne 'n');
 my @fli;
-foreach my $xf (7..$#ARGV){
- push(@fli,$ARGV[$xf]);
+foreach my $xf ((2 * $nrhaltestellen + 4)..$#ARGV){
+  push(@fli,join('',$ARGV[$xf]));
 }
 
 my $num;
 
-my $aurl = "http://fahrinfo.vbb.de/bin/stboard.exe/dn?input=$ahaltestellenr&boardType=$typus&maxJourneys=200&selectDate=today&productsFilter=$filter&start=yes&pageViewMode=PRINT&dirINPUT=&pageViewMode=PRINT&dirINPUT=&";
-my $burl = "http://fahrinfo.vbb.de/bin/stboard.exe/dn?input=$bhaltestellenr&boardType=$typus&maxJourneys=200&selectDate=today&productsFilter=$filter&start=yes&pageViewMode=PRINT&dirINPUT=&pageViewMode=PRINT&dirINPUT=&";
-my $acommand = "elinks -dump -dump-width 200 \"$aurl\" | sed \'s/ä/ae/g;s/ö/oe/g;s/ü/ue/g;s/Ä/Ae/g;s/Ö/Oe/g;s/Ü/Ue/g;s/ß/ss/g;s/é/e/g\'";		# command to get fahrinfo data
-my $bcommand = "elinks -dump -dump-width 200 \"$burl\" | sed \'s/ä/ae/g;s/ö/oe/g;s/ü/ue/g;s/Ä/Ae/g;s/Ö/Oe/g;s/Ü/Ue/g;s/ß/ss/g;s/é/e/g\'";		# command to get fahrinfo data
+foreach my $xh (0..$#haltestellennr) {
+ $url[$xh] = "http://fahrinfo.vbb.de/bin/stboard.exe/dn?input=$haltestellennr[$xh]&boardType=$typus&maxJourneys=$maxj&selectDate=today&productsFilter=$filter&start=yes&pageViewMode=PRINT&dirINPUT=&";
+ $command[$xh] = "elinks -dump -dump-width 200 \"$url[$xh]\" | sed \'s/ä/ae/g;s/ö/oe/g;s/ü/ue/g;s/Ä/Ae/g;s/Ö/Oe/g;s/Ü/Ue/g;s/ß/ss/g;s/é/e/g;s/è/e/g;s/ê/e/g;s/à/a/g;s/á/a/g;s/â/a/g\'";
+}
 
 # call the power checker now
 checkNet ($num);
