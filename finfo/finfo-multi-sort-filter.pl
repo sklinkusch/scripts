@@ -80,12 +80,11 @@ sub checkNet {
   my @prenr;
   # open a pipe to the acpi command and read the battery value
   # and a few other parameters
-  open (ACPI, "$acommand |") || die "can't open pipe A!";
-  Fahrinfo_ubuntu::read_str_p(\*ACPI,$astation,\@apretext);
-  close ACPI;
-  open (ACPJ, "$bcommand |") || die "can't open pipe B!";
-  Fahrinfo_ubuntu::read_str_p(\*ACPJ,$bstation,\@bpretext);
-  close ACPJ;
+  foreach my $xh (0..$#haltestellennr) {
+   open(ACPI, "$command[$xh] |") || die "can't open pipe $xh!";
+   Fahrinfo_ubuntu::read_str_pn(\*ACPI,$xh,$station[$xh],\@prenr,\@pretext);
+   close ACPI;
+  }
   Fahrinfo_ubuntu::st_entr(\@apretext,\@bpretext,\@pretext);
   Fahrinfo_ubuntu::ft_sgl_p($fls,\@fli,\@pretext,\@text);
   Fahrinfo_ubuntu::pmax_sgl(\@text);
