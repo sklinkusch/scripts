@@ -37,14 +37,14 @@ foreach my $xh (0..($nrhaltestellen - 1)){
  $xnumm[$xh] = join('',$ARGV[($xh + $nrhaltestellen + 3)]);
  @temparr = haltnummer($haltestellen[$xh],$xnumm[$xh]);
  push(@station,$temparr[0]);
- push(@haltestellennr,Fahrinfo::get_number($temparr[1]));
+ push(@haltestellennr,Fahrinfo_ubuntu::get_number($temparr[1]));
 }
 my $typus = join('',$ARGV[($nrhaltestellen + 1)]);
 print_exit() if ($typus ne 'dep' and $typus ne 'arr');
 
 my $filtre = join('',$ARGV[($nrhaltestellen + 2)]);
 $filtre = 127 if ($filtre < 1 or $filtre > 127);
-my $filter = Fahrinfo::calc_filter($filtre);
+my $filter = Fahrinfo_ubuntu::calc_filter($filtre);
 
 my @fls;
 foreach my $xh (0..$#haltestellen){
