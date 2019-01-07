@@ -91,9 +91,8 @@ checkNet ($num);
 sub checkNet {
   my ($label, $num) = @_;
   my (@text);
-  my (@enctext);
-  my @pretext; my @preenctext;
-  my @preftext; my @prefenctext;
+  my @pretext; 
+  my @preftext; 
   my $xn = 0;
   my @fxs;
   my @prenr;
