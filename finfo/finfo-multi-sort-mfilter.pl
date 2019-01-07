@@ -89,10 +89,13 @@ checkNet ($num);
 # call the update subroutine
 #
 sub checkNet {
-  my ($num) = @_;
+  my ($label, $num) = @_;
   my (@text);
-  my @pretext; 
-  my @preftext; 
+  my (@enctext);
+  my @pretext; my @preenctext;
+  my @preftext; my @prefenctext;
+  my $xn = 0;
+  my @fxs;
   my @prenr;
   # open a pipe to the acpi command and read the battery value
   # and a few other parameters
