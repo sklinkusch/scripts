@@ -405,6 +405,123 @@ sub ft_sgl_p {
   }
 }
 
+sub ft_sgl_pn {
+  my $xh  = $_[0];
+  my $fls = $_[1];
+  my $fl  = $_[2];
+  my $sl  = $_[3];
+  my $pnr = @_[4];
+  my $ot  = $_[5];
+  my $ft  = $_[6];
+  my $fxs = $_[7];
+  my $and = 0;
+  my $dumstring;
+  my @open;
+  my @close;
+  my @ort = @$ot;
+  my @opt;
+  my @prt;
+  my @fft;
+  my $spec = $$fls[$xh];
+  my @filt;
+  my $obegin;
+  my $oend;
+  $obegin = $$pnr[($xh-1)]+1 if ($xh > 0);
+  $obegin = 0 if ($xh == 0);
+  $oend = $$pnr[$xh];
+  foreach my $dda ($obegin..$oend){
+      push(@opt,$$ot[$dda]);
+  }
+  my $fbegin;
+  my $fend;
+  $fbegin = $$sl[($xh-1)]+1 if ($xh > 0);
+  $fbegin = 0 if ($xh == 0);
+  $fend = $$sl[$xh];
+  foreach my $ddf ($fbegin..$fend){
+    push(@filt,$$fl[$ddf]);
+  }
+  $and = 1 if (join(' ',@filt) =~ /[\{\}]/);
+  if ($and == 1){
+    foreach my $xz (0..$#filt){
+      if ($filt[$xz] =~ /^\{.+$/){
+        push(@open,$xz);
+        $filt[$xz] = substr($filt[$xz],1);
+      }
+      if ($filt[$xz] =~ /^.+\}$/){
+        push(@close,$xz);
+        $/ = "\}";
+        chomp($filt[$xz]);
+      }
+    }
+    main::print_exit() if(($#open - $#close) != 0);
+    foreach my $xz (0..$#open){
+      main::print_exit() if(($close[$xz] - $open[$xz]) != 1);
+    }
+    if ($spec eq 'f'){
+      foreach my $xz (0..$#opt){
+        foreach my $xy (0..$#open){
+          $dumstring = substr($opt[$xz],21,64);
+          if ($dumstring =~ /$filt[$open[$xy]]/ and $dumstring =~ /$filt[$close[$xy]]/){
+            push(@$ft,$opt[$xz]);
+            last;
+          }
+        }
+      }
+    }else{
+      foreach my $xz (0..$#opt){
+        foreach my $xy (0..$#open){
+          $dumstring = substr($opt[$xz],21,64);
+          if ($dumstring =~ /$filt[$open[$xy]]/ and $dumstring =~ /$filt[$close[$xy]]/){
+            $opt[$xz]  = undef;
+            last;
+          }
+        }
+      }
+    }
+    foreach my $xy (0..$#open){
+      $filt[$open[$xy]]   = undef;
+      $filt[$close[$xy]]  = undef;
+    }
+  }
+  if ($spec eq 'f'){
+    foreach my $xz (0..$#opt) {
+      $dumstring = substr($opt[$xz],21,64);
+      foreach my $xy (0..$#filt) {
+        if (defined $filt[$xy]){
+          if ($dumstring =~ /$filt[$xy]/){
+            push(@$ft,$opt[$xz]);
+            last;
+          }
+        }
+      }
+    }
+  }else{
+    foreach my $xz (0..$#opt) {
+      $dumstring = substr($opt[$xz],21,64);
+      foreach my $xy (0..$#filt) {
+        if (defined $filt[$xy]){
+          if ($dumstring =~ /$filt[$xy]/){
+            $opt[$xz]  = undef;
+            last;
+          }
+        }
+      }
+    }
+    foreach my $xy ($obegin..$oend) {
+      push(@$ft,$opt[$xy]);
+    }
+  }
+  push(@$fxs,$#$ft);
+}
+
+sub get_number {
+ my $str = shift;
+ $str =~ /([0-9]{1})([0-9]{6})/;
+ my $add = '00';
+ my $res = $1 . $add . $2;
+ return $res;
+}
+
 sub get_number {
  my $str = shift;
  $str =~ /([0-9]{1})([0-9]{6})/;
