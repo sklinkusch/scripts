@@ -103,8 +103,10 @@ sub checkNet {
    Fahrinfo_ubuntu::read_str_pn(\*ACPI,$xh,$station[$xh],\@prenr,\@pretext);
    close ACPI;
   }
+  foreach my $xh (0..$#haltestellennr) {
+    Fahrinfo_ubuntu::ft_sgl_pn($xh,\@fls,\@fli,\@slash,\@prenr,\@pretext,\@preftext,\@fxs);
+  }
   Fahrinfo_ubuntu::st_entr_n($#haltestellennr,\@prenr,\@pretext,\@preftext);
-  Fahrinfo_ubuntu::ft_sgl_p($fls,\@fli,\@preftext,\@text);
   Fahrinfo_ubuntu::pmax_sgl(\@text);
   Fahrinfo_ubuntu::add_lbr(\@text);
   my $nrtext = $#text;
