@@ -1,5 +1,12 @@
 #!/bin/bash
-path='/home/stefan/bin/fahrinfo-elinks.dat'
+SOURCE="${BASH_SOURCE[0]}"
+while [ -h $SOURCE ]; do
+ DIR="$( cd -P "$( dirname "$SOURCE" )" > /dev/null && pwd )"
+ SOURCE="$(readlink "$SOURCE")"
+ [[ $SOURCE != /* ]] && SOURCE="$DIR/$SOURCE"
+done
+DIR="$( cd -P "$( dirname "$SOURCE" )" > /dev/null && pwd )"
+path="$DIR/../data/fahrinfo-elinks.dat"
 if [ $# -lt 6 -o $# -gt 9 ]; then
  echo "Gebrauch: fahrnfo-elinks.sh \"<Haltestelle>\" <#Fahrten> <dep/arr> <code> <datecode> <begindate (datecode=1)> <enddate (datecode=1)> <timecode> <Zeile (optional)>"
  echo "dep: Abfahrtsplan, arr: Ankunftsplan"
