@@ -1,0 +1,37 @@
+#!/bin/bash
+
+# creates the main file structure
+# object 1: images, 2: scss, 4: js
+if [[ $# -ne 1 ]]; then
+ echo "Syntax: createproject <num>";
+ echo "num must be between 0 and 7";
+      echo "4: include JavaScript";
+      echo "2: include SCSS, otherwise CSS is included";
+      echo "1: include images";
+      exit;
+fi
+var=$1
+rootfolders=('assets')
+case $var in
+  7)  subfolders=('assets/css' 'assets/images' 'assets/scss' 'assets/js'); files=('index.html' 'assets/scss/style.scss' 'assets/scss/_variables.scss' 'assets/scss/_layout.scss' 'assets/scss/_typography.scss' 'assets/js/main.js');;
+  6)  subfolders=('assets/css' 'assets/scss' 'assets/js'); files=('index.html' 'assets/scss/style.scss' 'assets/scss/_variables.scss' 'assets/scss/_layout.scss' 'assets/scss/_typography.scss' 'assets/js/main.js');;
+  5)  subfolders=('assets/css' 'assets/images' 'assets/js'); files=('index.html' 'assets/js/main.js' 'assets/css/styles.css');;
+  4)  subfolders=('assets/css' 'assets/js'); files=('index.html' 'assets/js/main.js' 'assets/css/styles.css');;
+  3)  subfolders=('assets/css' 'assets/images' 'assets/scss'); files=('index.html' 'assets/scss/style.scss' 'assets/scss/_variables.scss' 'assets/scss/_layout.scss' 'assets/scss/_typography.scss');;
+  2)  subfolders=('assets/css' 'assets/scss'); files=('index.html' 'assets/scss/style.scss' 'assets/scss/_variables.scss' 'assets/scss/_layout.scss' 'assets/scss/_typography.scss');;
+  1)  subfolders=('assets/css' 'assets/images'); files=('index.html' 'assets/css/styles.css');;
+  0)  subfolders=('assets/css'); files=('index.html' 'assets/css/styles.css');;
+  *)  echo "Argument must be between 0 and 7!";
+      echo "4: include JavaScript";
+      echo "2: include SCSS, otherwise CSS is included";
+      echo "1: include images";
+      exit;;
+esac
+
+rootfd=`perl -le 'print join " ", @ARGV', ${rootfolders[@]}`
+subfd=`perl -le 'print join " ", @ARGV', ${subfolders[@]}`
+fls=`perl -le 'print join " ", @ARGV', ${files[@]}`
+
+mkdir -p $rootfd
+mkdir -p $subfd
+touch $fls
