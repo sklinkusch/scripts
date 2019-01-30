@@ -3,12 +3,19 @@
 use strict;
 use warnings;
 use utf8;
+use Net::Domain qw (hostname hostdomain);
 use Switch;
 use FindBin;
 
 my $browser = join('',$ARGV[0]);                                                         # Browser, in dem die Seiten aufgerufen werden sollen (w3m oder elinks)
 my $modus = join('',$ARGV[1]);                                                           # Modus, in dem die Seiten aufgerufen werden (mobil oder stat)
-my $listfile = "$FindBin::RealBin/twitter.list";                                         # Datei, aus der die Adressen entnommen werden
+my $hostname = `hostname`;
+my $listfile;
+if($hostname =~ /dci-pc-ubuntu/){
+$listfile = "$FindBin::RealBin/twitter2.list";
+}else{
+$listfile = "$FindBin::RealBin/twitter.list";                                         # Datei, aus der die Adressen entnommen werden
+}
 my $mdate = `date | sed 's/ä/a/g'`;                                                      # speichere Ausgabe von date in $mdate
 my @madate = split_date($mdate);                                                         # Aufspaltung in einzelne Bestandteile, Speicherung im @madate
 my $fullthread = agent_thread(@madate);                                                  # Bestimmung, wie viel Daten zu bearbeiten sind (0: Mo-Fr außerhalb der Kernzeit, 1: Mo-Fr in der Kernzeit, 
