@@ -40,6 +40,9 @@ done
   outf=`perl -le 'print join " ",@ARGV' "${urls[@]}"`
   if [ $browser = 'w3m' ]; then
     options='-N'
+  elif [ $browser = 'w3mb' ]; then
+    browser=w3m
+    options="-config $HOME/.w3m/config_blk -N"
   elif [ $browser = 'elinks' ]; then
     options=''
   else
