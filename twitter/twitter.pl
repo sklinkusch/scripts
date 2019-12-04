@@ -11,7 +11,7 @@ my $browser = join('',$ARGV[0]);                                                
 my $modus = join('',$ARGV[1]);                                                           # Modus, in dem die Seiten aufgerufen werden (mobil oder stat)
 my $hostname = `hostname`;
 my $listfile;
-if($hostname =~ /dci-pc-ubuntu/){
+if($hostname =~ /dci-pc-ubuntu/ or $hostname =~ /sleepink/){
 $listfile = "$FindBin::RealBin/twitter2.list";
 }else{
 $listfile = "$FindBin::RealBin/twitter.list";                                         # Datei, aus der die Adressen entnommen werden
