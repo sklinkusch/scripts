@@ -8,8 +8,11 @@ tagesspiegel
 MDRAktuell
 BR24
 ndr
+butenunbinnen
 WDRaktuell
+hrinfo
 SWRAktuell
+SRaktuell
 DERSPIEGEL
 #sternde
 #BILD
@@ -26,6 +29,6 @@ Berliner_Fw
 #polizeiBB
 #?polizeiBB_E
 bpol_b
-?bpol_b_einsatz
+#?bpol_b_einsatz
 #%GStABerlin
 #%GBA_b_BGH
