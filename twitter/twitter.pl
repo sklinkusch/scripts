@@ -6,15 +6,26 @@ use utf8;
 use Net::Domain qw (hostname hostdomain);
 use Switch;
 use FindBin;
+use File::HomeDir qw(home);
 
 my $browser = join('',$ARGV[0]);                                                         # Browser, in dem die Seiten aufgerufen werden sollen (w3m oder elinks)
 my $modus = join('',$ARGV[1]);                                                           # Modus, in dem die Seiten aufgerufen werden (mobil oder stat)
 my $hostname = `hostname`;
 my $listfile;
+my $homedir = home();
+my $realListfile = "$homedir/.twitter.list"; 
 if($hostname =~ /dci-pc-ubuntu/ or $hostname =~ /sleepink/){
-$listfile = "$FindBin::RealBin/twitter2.list";
+  if (-e $realListfile and -s $realListfile and -r $realListfile){
+    $listfile = $realListfile;
+  } else {
+    $listfile = "$FindBin::RealBin/twitter2.list";
+  }
 }else{
-$listfile = "$FindBin::RealBin/twitter.list";                                         # Datei, aus der die Adressen entnommen werden
+  if (-e $realListfile and -s $realListfile and -r $realListfile){
+    $listfile = $realListfile;
+  } else {
+    $listfile = "$FindBin::RealBin/twitter.list";                                         # Datei, aus der die Adressen entnommen werden
+  }
 }
 my $mdate = `date | sed 's/ä/a/g'`;                                                      # speichere Ausgabe von date in $mdate
 my @madate = split_date($mdate);                                                         # Aufspaltung in einzelne Bestandteile, Speicherung im @madate
