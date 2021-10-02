@@ -150,7 +150,7 @@ foreach my $key (sort { $coalitions{$b} <=> $coalitions{$a} } (keys(%coalitions)
 foreach my $m (0..$#coalparties) {
 	my $num_specchars = count_specchars($coalparties[$m]);
 	my $num_width = 40 + $num_specchars;
-	printf("%-${num_width}s: %3d (%5.1f %%) %-25s\n",$coalparties[$m],$coalvotes[$m],100*$coalvotes[$m]/$summe, $coalalliances[$m]);
+	printf("%-${num_width}s: %3d (%5.1f %%) %-40s\n",$coalparties[$m],$coalvotes[$m],100*$coalvotes[$m]/$summe, $coalalliances[$m]);
 }
 
 # Ausgabetext falls keine Koalition übrig
@@ -264,10 +264,14 @@ sub naming {
 		return "Schwarz-gelbe Koalition";
 	} elsif ("SPD" ~~ @parties and "Grüne" ~~ @parties and "FDP" ~~ @parties and "Linke" ~~ @parties and $#parties == 3) {
 		return "Rot-rot-grün-gelbe Koalition (R2G2)";
+	} elsif ("SPD" ~~ @parties and "Grüne" ~~ @parties and "Linke" ~~ @parties and "AfD" ~~ @parties and $#parties == 3) {
+		return "Eritrea-Koalition";
 	} elsif ("SPD" ~~ @parties and "Grüne" ~~ @parties and "FDP" ~~ @parties and $#parties == 2) {
 		return "Ampelkoalition";
 	} elsif ("SPD" ~~ @parties and "Grüne" ~~ @parties and "Linke" ~~ @parties and $#parties == 2) {
 		return "Rot-rot-grüne Koalition (R2G)";
+	} elsif ("SPD" ~~ @parties and "Grüne" ~~ @parties and "SSW" ~~ @parties and $#parties == 2) {
+		return "Dänen-Ampel oder Gambia-Koalition";
 	} elsif ("SPD" ~~ @parties and "Grüne" ~~ @parties and $#parties == 1) {
 		return "Rot-grüne Koalition";
 	} elsif ("SPD" ~~ @parties and "Linke" ~~ @parties and $#parties == 1) {
@@ -275,7 +279,7 @@ sub naming {
 	} elsif ("SPD" ~~ @parties and "FDP" ~~ @parties and $#parties == 1) {
 		return "Sozialliberale Koalition";
 	} elsif ("Grüne" ~~ @parties and "FDP" ~~ @parties and $#parties == 1) {
-		return "Grün-gelbe Koalition";
+		return "Limetten- oder Zitruskoalition";
 	} else {
 		return "";
 	}
