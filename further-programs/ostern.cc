@@ -470,8 +470,15 @@ int main(int argc, char *argv[])
   {
     cout << "Christi Himmelfahrt am 30.4." << jahr << " (Do)\n";
   }
-  cout << "Maifeiertag am 1.5." << jahr << " (" << wotag_mai << ")\n";
-  if (monat_hifa == 5 && tag_hifa < tag_mutt)
+  if (tag_hifa == 1 && monat_hifa == 5)
+  {
+    cout << "Christi Himmelfahrt und Maifeiertag am 1.5." << jahr << " (Do)\n";
+  }
+  else
+  {
+    cout << "Maifeiertag am 1.5." << jahr << " (" << wotag_mai << ")\n";
+  }
+  if (monat_hifa == 5 && tag_hifa > 1 && tag_hifa < tag_mutt)
   {
     cout << "Christi Himmelfahrt am " << tag_hifa << ".5." << jahr << " (Do)\n";
   }
