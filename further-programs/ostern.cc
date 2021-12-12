@@ -155,6 +155,13 @@ int main(int argc, char *argv[])
   int tag_pfimo;
   int tag_trini;
   int tag_fron;
+  int tag_volk;
+  int tag_buss;
+  int tag_tot;
+  int tag_one;
+  int tag_two;
+  int tag_three;
+  int tag_four;
   int monat_rosen;
   int monat_fast;
   int monat_asch;
@@ -166,6 +173,7 @@ int main(int argc, char *argv[])
   int monat_pfimo;
   int monat_trini;
   int monat_fron;
+  int monat_one;
 
   int jahr = atoi(argv[1]);
   if (jahr % 4 == 0 && jahr % 100 != 0)
@@ -382,6 +390,23 @@ int main(int argc, char *argv[])
     tag_fron = tag_trini + 4;
     monat_fron = monat_trini;
   }
+  tag_volk = 19 - wochentag(19, 11, jahr);
+  tag_buss = tag_volk + 3;
+  tag_tot = 26 - wochentag(26, 11, jahr);
+  int day = 3 - wochentag(3, 12, jahr);
+  if (day < 1)
+  {
+    tag_one = 30 + day;
+    monat_one = 11;
+  }
+  else
+  {
+    tag_one = day;
+    monat_one = 12;
+  }
+  tag_two = 10 - wochentag(10, 12, jahr);
+  tag_three = 17 - wochentag(17, 12, jahr);
+  tag_four = 24 - wochentag(24, 12, jahr);
 
   char *wotag_neujahr = new char[3];
   char *wotag_epiph = new char[3];
@@ -464,6 +489,13 @@ int main(int argc, char *argv[])
   cout << "Reformationstag am 31.10." << jahr << " (" << wotag_reform << ")\n";
   cout << "Allerheiligen am 1.11." << jahr << " (" << wotag_allheil << ")\n";
   cout << "Allerseelen am 2.11." << jahr << " (" << wotag_allseel << ")\n";
+  cout << "Volkstrauertag am " << tag_volk << ".11." << jahr << " (So)\n";
+  cout << "Buß- und Bettag am " << tag_buss << ".11." << jahr << " (Mi)\n";
+  cout << "Totensonntag am " << tag_tot << ".11." << jahr << " (So)\n";
+  cout << "1. Advent am " << tag_one << "." << monat_one << "." << jahr << " (So)\n";
+  cout << "2. Advent am " << tag_two << ".12." << jahr << " (So)\n";
+  cout << "3. Advent am " << tag_three << ".12." << jahr << " (So)\n";
+  cout << "4. Advent am " << tag_four << ".12." << jahr << " (So)\n";
   cout << "Heiligabend am 24.12." << jahr << " (" << wotag_heilig << ")\n";
   cout << "1. Weihnachtstag am 25.12." << jahr << " (" << wotag_1weihn << ")\n";
   cout << "2. Weihnachtstag am 26.12." << jahr << " (" << wotag_2weihn << ")\n";
