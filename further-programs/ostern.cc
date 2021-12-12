@@ -418,25 +418,25 @@ int main(int argc, char *argv[])
     cout << "Rosenmontag am " << tag_rosen << "." << monat_rosen << "." << jahr << " (Mo)\n";
     cout << "Fastnacht am " << tag_fast << "." << monat_fast << "." << jahr << " (Di)\n";
     cout << "Aschermittwoch am " << tag_asch << "." << monat_asch << "." << jahr << " (Mi)\n";
-    cout << "Internationaler Frauentag am 08.03." << jahr << " (" << wotag_frau << ")\n";
+    cout << "Internationaler Frauentag am 8.3." << jahr << " (" << wotag_frau << ")\n";
   }
   else if (tag_rosen == 6)
   {
     cout << "Rosenmontag am 06.03." << jahr << " (Mo)\n";
     cout << "Fastnacht am 07.03." << jahr << " (Di)\n";
-    cout << "Internationaler Frauentag und Aschermittwoch am 08.03." << jahr << " (Mi)\n";
+    cout << "Internationaler Frauentag und Aschermittwoch am 8.3." << jahr << " (Mi)\n";
   }
   else if (tag_rosen == 7)
   {
-    cout << "Rosenmontag am 07.03." << jahr << " (Mo)\n";
-    cout << "Internationaler Frauentag und Fastnacht am 08.03." << jahr << " (Di)\n";
-    cout << "Aschermittwoch am 09.03." << jahr << " (Mi)\n";
+    cout << "Rosenmontag am 7.3." << jahr << " (Mo)\n";
+    cout << "Internationaler Frauentag und Fastnacht am 8.3." << jahr << " (Di)\n";
+    cout << "Aschermittwoch am 9.3." << jahr << " (Mi)\n";
   }
   else
   {
-    cout << "Internationaler Frauentag und Rosenmontag am 08.03." << jahr << " (Mo)\n";
-    cout << "Fastnacht am 09.03." << jahr << " (Di)\n";
-    cout << "Aschermittwoch am 10.03." << jahr << " (Mi)\n";
+    cout << "Internationaler Frauentag und Rosenmontag am 8.3." << jahr << " (Mo)\n";
+    cout << "Fastnacht am 9.3." << jahr << " (Di)\n";
+    cout << "Aschermittwoch am 10.3." << jahr << " (Mi)\n";
   }
   cout << "Karfreitag am " << tag_kafr << "." << monat_kafr << "." << jahr << " (Fr)\n";
   cout << "Ostersonntag am " << tag << "." << monnr << "." << jahr << " (So)\n";
